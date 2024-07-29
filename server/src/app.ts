@@ -3,13 +3,13 @@ import express, { Express, Request, Response } from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { connectToDatabaseWithWindowsAuth } from "./db/db.connection";
+import { connectToDatabase } from "./db/db.connection";
 import { gerenteRouter } from "./routes/gerente.route";
-import { config } from "./config/db.config";
+import { sqlConfig } from "./config/db.config";
 
 dotenv.config();
 
-connectToDatabaseWithWindowsAuth(config)
+connectToDatabase(sqlConfig);
 
 const app: Express = express();
 const port: string | number = process.env.PORT || 8080;
