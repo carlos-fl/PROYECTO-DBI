@@ -1,0 +1,10 @@
+POST http://localhost:3000/gerente/login
+Content-Type: application/json
+
+{
+  "user": "user",
+  "password": "password"
+}
+
+### prueba get
+GET http://localhost:3000/gerente
