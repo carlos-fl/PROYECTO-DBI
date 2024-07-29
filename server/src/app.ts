@@ -1,10 +1,25 @@
 import * as dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
+import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import { connectToDatabaseWithWindowsAuth } from "./db/db.connection";
+import { gerenteRouter } from "./routes/gerente.route";
+import { config } from "./config/db.config";
 
 dotenv.config();
 
+connectToDatabaseWithWindowsAuth(config)
+
 const app: Express = express();
 const port: string | number = process.env.PORT || 8080;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.json());
+
+app.use("/gerente", gerenteRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World!");
