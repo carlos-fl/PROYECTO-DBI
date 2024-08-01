@@ -1,20 +1,31 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref, defineEmits } from "vue";
+
 
 const props = defineProps({
   inputType: String,
   placeholder: String,
   maxLength: Number,
   minLength: Number,
+  inputValue: String
 });
+
+const emits = defineEmits(['currentValue'])
+
+function getCurrentValue(e) {
+  emits("currentValue", e.target.value)
+}
+
 </script>
 
 <template>
   <input
+    @change="getCurrentValue"
     :type="inputType"
     :minlength="minLength"
     :maxlength="maxLength"
     :placeholder="placeholder"
+    :value="inputValue"
   />
 </template>
 
