@@ -1,3 +1,7 @@
+import * as dotenv from 'dotenv'
+
+dotenv.config()
+
 const user: string = process.env.DB_USER || "";
 const password: string = process.env.DB_PWD || "";
 const database: string = process.env.DB_NAME || "";
@@ -23,12 +27,7 @@ export const config = {
   database,
   options: {
     trustedConnection: true, // Set to true if using Windows Authentication
-    trustServerCertificate: false, // Set to true if using self-signed certificates
+    //trustServerCertificate: false, // Set to true if using self-signed certificates
   },
   driver: "msnodesqlv8", // Required if using Windows Authentication
 };
-
-export const configString: string = `Driver=msnodesqlv8;Server=(local)\\INSTANCE;Database=${database};UID=DOMAIN\\username;PWD=${password};Encrypt=true`;
-export const configTediusString: string = `Server=localhost,1433;Database=${database};Encrypt=true`;
-export const sqlConfigString: string = `Server= ${server}; Database= ${database}; Integrated Security=True;`;
-export const connetionString: string = `Data Source=localhost\\SQLEXPRESS;Database=${database};`;

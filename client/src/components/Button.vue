@@ -8,7 +8,7 @@
   const emits = defineEmits(['handleClick'])
 
   function buttonAction() {
-    emits(handleClick)
+    emits("handleClick")
   }
 </script>
 

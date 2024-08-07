@@ -1,29 +1,16 @@
-<script setup>
-import Input from "./components/Input.vue";
-import Form from "./components/Form.vue";
-import Button from "./components/Button.vue";
-import FormHeader from "./components/FormHeader.vue";
-</script>
+<script setup></script>
 
 <template>
-  <div>
-    <Form>
-      <FormHeader text="Iniciar sesión"></FormHeader>
-      <Input
-        inputType="text"
-        :maxLength="10"
-        :minLength="3"
-        placeholder="usuario"
-      ></Input>
-      <Input
-        inputType="password"
-        :maxLength="30"
-        :minLength="8"
-        placeholder="contraseña"
-      ></Input>
-      <Button text="Iniciar sesión"></Button>
-    </Form>
-  </div>
+  <suspense>
+    <template #default>
+      <router-view></router-view>
+    </template>
+    <template #fallback>
+      <div id="app">
+        ...loading
+      </div>
+    </template>
+  </suspense>
 </template>
 
 <style scoped>
