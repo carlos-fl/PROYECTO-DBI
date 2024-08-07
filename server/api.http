@@ -11,3 +11,9 @@ GET http://localhost:3000/gerente
 
 
 
+### obtener boletos
+GET http://localhost:3000/boletos/precios
+
+### obtener boletos por tipo de proyeccion
+
+GET http://localhost:3000/boletos/precios/1

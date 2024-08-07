@@ -4,9 +4,10 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { connectToDatabase } from "./db/db.connection";
-import { gerenteRouter } from "./routes/gerente.route";
 import { sqlConfig } from "./config/db.config";
 import { verifyToken } from "./middlewares/authMiddleware";
+import { gerenteRouter } from "./routes/gerente.route";
+import { ticketsRouter } from "./routes/boletos";
 
 dotenv.config();
 
@@ -26,7 +27,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
 
-
+app.use('/boletos', ticketsRouter)
 app.use("/gerente", gerenteRouter);
 app.use(verifyToken)
 
