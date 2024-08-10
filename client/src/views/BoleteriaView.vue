@@ -1,5 +1,6 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useRoute } from 'vue-router'
 import BoleteriaHeader from "../components/BoleteriaHeader.vue";
 import Boleteria from '../components/Boleteria.vue'
 import Total from '../components/Total.vue'
@@ -33,7 +34,9 @@ function getTotalToPay() {
 
 async function fetchTickets() {
   try {
-    const res = await fetch(BACKEND_URL + '/boletos/precios/1', {
+    const route = useRoute()
+    const idParam = route.params.id
+    const res = await fetch(BACKEND_URL + `/boletos/precios/${idParam}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application-json'
@@ -47,20 +50,27 @@ async function fetchTickets() {
 }
 
 const data = await fetchTickets()
-tickets.value = data.data
+tickets.value = data?.data
+
+console.log('proyeccion: ', data?.proyeccion)
+console.log(tickets.value)
 
 tickets.value.forEach(el => {
-  if (!ticketsByChair.value[el.ID_ASIENTO]) ticketsByChair.value[el.ID_ASIENTO] = []
+  if (!ticketsByChair.value[el.ID_Asiento]) ticketsByChair.value[el.ID_Asiento] = []
 
-  ticketsByChair.value[el.ID_ASIENTO].push(el)
+  ticketsByChair.value[el.ID_Asiento].push(el)
 })
 
-const regularChair = ref(ticketsByChair[1])
-const dboxChair = ref(ticketsByChair[2])
-const thirdChair = ref(ticketsByChair[3])
-const desChair = ref(ticketsByChair[4])
-const fourthChair = ref(ticketsByChair[5])
-const premierChair = ref(ticketsByChair[6])
+const regularChair = ref(ticketsByChair.value[1])
+const dboxChair = ref(ticketsByChair.value[2])
+const thirdChair = ref(ticketsByChair.value[3])
+const desChair = ref(ticketsByChair.value[4])
+const fourthChair = ref(ticketsByChair.value[5])
+const premierChair = ref(ticketsByChair.value[6])
+
+console.log('REGULAR CHAIR', regularChair.value)
+console.log(dboxChair.value)
+console.log(premierChair.value)
 
 onMounted(async () => {
   await fetchTickets()
@@ -72,10 +82,22 @@ onMounted(async () => {
     <div>
       <div>
         <BoleteriaHeader title="SILLA GENERAL"></BoleteriaHeader>
+        <Boleteria v-for="ticket in regularChair" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
+      </div>
+      <div v-if="premierChair">
+        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
+        <Boleteria v-for="ticket in premierChair" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
+      </div>
+      <div v-if="dboxChair">
+        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
+        <Boleteria v-for="ticket in dboxChair" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
+      </div>
+      <div v-if="premierChair">
+        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
         <Boleteria v-for="ticket in tickets" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
       </div>
-      <div>
-        <BoleteriaHeader title="SILLA PREMIER"></BoleteriaHeader>
+      <div v-if="premierChair">
+        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
         <Boleteria v-for="ticket in tickets" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
       </div>
      <!--  <Boleteria precio="85.00" tipo="niños" @handleFunction="(event) => updateTotalOfTickets(event, 'niños', 85.00)"></Boleteria>
@@ -100,7 +122,7 @@ onMounted(async () => {
 #footer {
   display: flex;
   justify-content: space-between;
-  width: 30%;
+  width: 70%;
   padding: 10px;
 }
 </style>

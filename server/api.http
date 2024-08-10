@@ -2,8 +2,8 @@ POST http://localhost:3000/gerente/login
 Content-Type: application/json
 
 {
-  "user": "USER1",
-  "password": "HOLA1234"
+  "user": "usuario",
+  "password": "contra"
 }
 
 ### prueba get
@@ -17,3 +17,12 @@ GET http://localhost:3000/boletos/precios
 ### obtener boletos por tipo de proyeccion
 
 GET http://localhost:3000/boletos/precios/1
+
+### create new sala
+POST http://localhost:3000/salas/nuevo
+Content-Type: application/json
+
+{
+  "numeroSala": 93,
+  "capacidad": 156
+}

@@ -1,10 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router';
 import Form from "../components/Form.vue";
 import FormHeader from "../components/FormHeader.vue";
 import Input from "../components/Input.vue";
 import Button from "../components/Button.vue";
+import { BACKEND_URL } from '../config/data';
 
+const router = useRouter()
 const userValue = ref("");
 const userPassword = ref("");
 
@@ -31,7 +34,8 @@ function fetchData() {
         .json()
         .then((response) => {
           if (res.status == 200) {
-            console.log("YOU HAVE AN ACCOUNT IN THIS CINEMA", response.data);
+            const urlPath = "/gerente" 
+            router.push({ path: urlPath })
           }
         })
         .catch((err) => {
