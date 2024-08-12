@@ -2,9 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';
 import BoleteriaView from '../views/BoleteriaView.vue';
 import HomeView from '../views/HomeView.vue'
+<<<<<<< HEAD
 import GerenteHomeView from '../views/GerenteHomeView.vue'
 import GerenteFormsView from '../views/GerenteFormsView.vue'
 import Prueba from '../views/Prueba.vue'
+=======
+import GuestLoginForm from '../views/GuestLoginView.vue'
+>>>>>>> 12b9f4d (Includes view for registering a new customer)
 
 
 const routes = [
@@ -40,10 +44,16 @@ const routes = [
     component: BoleteriaView
   },
   {
+<<<<<<< HEAD
     path: '/gerente',
     name: 'GerenteHome',
     component: GerenteHomeView,
     meta: { requiresAuth: true, }
+=======
+    path: '/invitado',
+    name: 'invitado',
+    component: GuestLoginForm
+>>>>>>> 12b9f4d (Includes view for registering a new customer)
   }
 ];
 
