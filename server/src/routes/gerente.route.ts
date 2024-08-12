@@ -12,7 +12,6 @@ gerenteRouter.post("/login", async (req: Request, res: Response) => {
     const dbRes = await sql.query(
       `SELECT * FROM Administradores WHERE usuario LIKE '${user}'`
     );
-
     const userResult = dbRes.recordset[0];
     if (!userResult)
       return res.status(401).json({ message: "Invalid Credentials", data: {} });

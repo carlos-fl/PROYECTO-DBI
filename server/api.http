@@ -26,3 +26,6 @@ Content-Type: application/json
   "numeroSala": 93,
   "capacidad": 156
 }
+
+### get all movies
+GET http://localhost:3000/peliculas/emision

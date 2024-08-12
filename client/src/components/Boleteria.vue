@@ -5,6 +5,9 @@ const props = defineProps({
   precio: Number,
 });
 
+const MAXTICKETSTOBUY = ref(10)
+const ticketsSelected = ref(0)
+
 const emits = defineEmits(['handleFunction'])
 
 function getValueSelected(e) {
@@ -21,17 +24,7 @@ function getValueSelected(e) {
       </div>
       <div>
         <select @change="getValueSelected">
-          <option value="0" selected>0</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
-          <option value="10">10</option>
+          <option v-for="i in MAXTICKETSTOBUY - ticketsSelected" :key="i" :value="i">{{ i }}</option>
         </select>
       </div>
     </div>

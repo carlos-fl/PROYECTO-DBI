@@ -1,33 +1,35 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps } from "vue";
 
 const props = defineProps({
   title: String,
-})
+});
 </script>
 
 <template>
-  <div id="container">
+  <header id="container">
     <div>
       <h2 id="title">{{ title }}</h2>
-    </div> 
+    </div>
     <div id="buttons-container">
       <slot></slot>
     </div>
-  </div>
+  </header>
 </template>
-
 
 <style scoped>
 #container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 80vw;
 }
 
 #buttons-container {
   display: flex;
   justify-content: space-evenly;
+}
+
+h2 {
+  margin-left: 40px;
 }
 </style>

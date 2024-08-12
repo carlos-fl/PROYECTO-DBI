@@ -4,6 +4,7 @@ import BoleteriaView from '../views/BoleteriaView.vue';
 import HomeView from '../views/HomeView.vue'
 import GerenteHomeView from '../views/GerenteHomeView.vue'
 import GerenteFormsView from '../views/GerenteFormsView.vue'
+import Prueba from '../views/Prueba.vue'
 
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
     name: 'Home',
     component: HomeView 
    // redirect: '/login'
+  },
+  {
+    path: '/:sucursal',
+    name: 'HomeSucursal',
+    component: HomeView
   },
   {
     path: '/gerente/login',
@@ -24,8 +30,9 @@ const routes = [
     component: GerenteFormsView 
   },
   {
-    path: '/:name/:id',
-    name: 'Proyeccion'
+    path: '/:sucursal/proyecciones/:name/:id',
+    name: 'Proyeccion',
+    component: Prueba
   },
   {
     path: '/boleteria/:id',
