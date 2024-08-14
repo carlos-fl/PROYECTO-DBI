@@ -1,4 +1,3 @@
-import { json } from "body-parser";
 import { Router, Request, Response } from "express";
 import sql from "mssql";
 
@@ -36,18 +35,5 @@ clientRouter.get('/sucursales', async (req: Request, res: Response) => {
   } catch(err) {
     return res.status(500).json({ message: 'error while handling sucursales data' })
   }
-});
+})
 
-clientRouter.post('/registro', async (req: Request, res: Response) => {
-  try {
-    const { id, name, surname, phoneNumber, email } = req.body   
-    const result = await sql.query(`INSERT INTO Personas (DNI, Nombre1, Apellido1, Telefono, Correo)
-                  VALUES ('${id}','${name}','${surname}','${phoneNumber}','${email}');`)
-    res.status(200).json({
-    message: 'successful'
-    })
-  } catch(err) {
-    console.log(err);
-    res.status(500).json({ message: 'error while creating new user' })
-  }
-});
