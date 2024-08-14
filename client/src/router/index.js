@@ -6,6 +6,7 @@ import GerenteHomeView from '../views/GerenteHomeView.vue'
 import GerenteFormsView from '../views/GerenteFormsView.vue'
 import AsientosView from '../views/AsientosView.vue'
 import Prueba from '../views/Prueba.vue'
+import GuestLoginView from '../views/GuestLoginView.vue'
 
 
 const routes = [
@@ -50,6 +51,11 @@ const routes = [
     name: 'GerenteHome',
     component: GerenteHomeView,
     meta: { requiresAuth: true, }
+  },
+  {
+    path: '/invitado',
+    name: 'GuestLogin',
+    component: GuestLoginView
   }
 ];
 
