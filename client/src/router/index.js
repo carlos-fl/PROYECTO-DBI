@@ -36,7 +36,7 @@ const routes = [
     path: '/gerente',
     name: 'GerenteHome',
     component: GerenteHomeView,
-    meta: { requiresAuth: true, }
+    //meta: { requiresAuth: true, }
   }
 ];
 
