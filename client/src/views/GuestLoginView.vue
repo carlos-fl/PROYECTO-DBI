@@ -78,16 +78,16 @@
     }
 
     function currentUserFirstName(currentValue) {
-        userName.value = currentValue.trim();
+        userFirstName.value = currentValue.trim();
     }
     function currentUserMiddleName(currentValue) {
-        userName.value = currentValue.trim();
+        userMiddleName.value = currentValue.trim();
     }
     function currentUserFirstSurname(currentValue) {
-        userSurname.value = currentValue.trim();
+        userFirstSurname.value = currentValue.trim();
     }
     function currentUserSecondSurname(currentValue) {
-        userSurname.value = currentValue.trim();
+        userSecondSurname.value = currentValue.trim();
     }
     function currentUserPhoneNumber(currentValue) {
         userPhoneNumber.value = currentValue.trim();
