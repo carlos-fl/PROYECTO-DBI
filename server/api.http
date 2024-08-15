@@ -32,3 +32,6 @@ GET http://localhost:3000/peliculas/emision
 
 ### obtener numero sala
 GET http://localhost:3000/boletos/proyecciones/2
+
+### get seats
+GET http://localhost:3000/boletos/asientos/2

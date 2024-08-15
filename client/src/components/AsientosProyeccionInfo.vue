@@ -13,6 +13,14 @@ const props = defineProps({
 const visualization = computed(() => {
   return props.doblada ? 'DOB' : 'SUB'
 })
+
+const getDate = computed(() => {
+  return (props.fecha.split('T',2))[0]
+})
+
+const getSchedule = computed(() => {
+  return (props.horario.split('T', 2))[1].substring(0, 5)
+})
 </script>
 
 
@@ -23,7 +31,7 @@ const visualization = computed(() => {
     </div> 
     <div id="proyeccion-container-info">
       <h2>{{ titulo }} {{visualization }}</h2>
-      <h3>{{ fecha }}, {{ hora }}</h3>
+      <h3>{{ getDate }}, {{ getSchedule }}</h3>
       <h3>Clasificación: <span>{{ clasificacion }}</span></h3>
     </div>
   </div>
@@ -31,9 +39,14 @@ const visualization = computed(() => {
 
 
 <style scoped>
+img {
+  width: 130px;
+}
 
 #proyeccion-container {
   display: flex;
+  justify-content: space-around;
+  margin-top: 60px;
 }
 
 span {
