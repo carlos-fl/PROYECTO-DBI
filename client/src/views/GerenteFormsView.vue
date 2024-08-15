@@ -1,35 +1,31 @@
 <script setup>
-  import { useRoute } from "vue-router";
-  import { ref } from "vue";
-  import Form from '../components/Form.vue'
-  import FormHeader from '../components/FormHeader.vue'
-  import Input from '../components/Input.vue'
-  import Select from "../components/Select.vue";
-  import Option from "../components/Option.vue";
-  import Button from "../components/Button.vue";
-  import { BACKEND_URL } from "../config/data";
+import { useRoute } from "vue-router";
+import { ref } from "vue";
+import Form from '../components/Form.vue';
+import FormHeader from '../components/FormHeader.vue';
+import Input from '../components/Input.vue';
+import Select from "../components/Select.vue";
+import Option from "../components/Option.vue";
+import Button from "../components/Button.vue";
+import ProyeccionesForm from "../components/ProyeccionesForm.vue"; //Creo que hare un formulario mas especifico y que llame dinamicamente campos
 
-  const router = useRoute()
-  const currentView = ref(router.params.feature) 
+const router = useRoute();
+const currentView = ref(router.params.feature);
 </script>
-
 
 <template>
   <div>
+    <!-- Form for managing projections -->
     <div v-if="currentView == 'proyecciones'">
-      <Form>
-        <FormHeader text="Agregar proyección"></FormHeader>
-        <Input></Input>
-        <Input></Input>
-        <Input></Input>
-      </Form>
+      <ProyeccionesForm></ProyeccionesForm>
     </div>
+    <!-- Other forms remain unchanged -->
     <div v-if="currentView == 'precios'">
       <Form>
-        <FormHeader text="Agregar sala"></FormHeader>
-        <Input></Input>
-        <Input></Input>
-        <Input></Input>
+        <FormHeader text="Agregar Precio"></FormHeader>
+        <Input placeholder="Nombre del Precio"></Input>
+        <Input placeholder="Valor"></Input>
+        <Button text="Guardar" @handleClick="handleSavePrice"></Button>
       </Form>
     </div>
     <div v-if="currentView == 'salas'">
@@ -54,13 +50,6 @@
           <Option text="Idioma original"></Option>
           <Option option-value="1" text="Inglés"></Option>
         </Select>
-        <!-- 
-        TODO: todas las películas son proximamente cuando se ingresan al sistema
-        <Select>
-          <Option text="Estado de la película"></Option>
-          <Option option-value="1" text="próximamente"></Option>
-        </Select> 
-        -->
         <Select>
           <Option text="Clasificación"></Option>
           <Option option-value="1" text="Mayores de 13 años"></Option>
@@ -134,6 +123,20 @@
     </div>
   </div>
 </template>
+
+<script>
+function handleSaveProjection() {
+  
+}
+
+function handleSavePrice() {
+  
+}
+
+function handleSaveRoom() {
+  
+}
+</script>
 
 
 <style scoped>
