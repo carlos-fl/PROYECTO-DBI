@@ -4,6 +4,9 @@ import BoleteriaView from '../views/BoleteriaView.vue';
 import HomeView from '../views/HomeView.vue'
 import GerenteHomeView from '../views/GerenteHomeView.vue'
 import GerenteFormsView from '../views/GerenteFormsView.vue'
+import AsientosView from '../views/AsientosView.vue'
+import Prueba from '../views/Prueba.vue'
+import GuestLoginView from '../views/GuestLoginView.vue'
 
 
 const routes = [
@@ -12,6 +15,11 @@ const routes = [
     name: 'Home',
     component: HomeView 
    // redirect: '/login'
+  },
+  {
+    path: '/:sucursal',
+    name: 'HomeSucursal',
+    component: HomeView
   },
   {
     path: '/gerente/login',
@@ -24,19 +32,32 @@ const routes = [
     component: GerenteFormsView 
   },
   {
-    path: '/:name/:id',
-    name: 'Proyeccion'
+    path: '/:sucursal/proyecciones/:name/:id',
+    name: 'Proyeccion',
+    component: Prueba
   },
   {
-    path: '/boleteria/:id',
+    path: '/:sucursal/proyecciones/:name/:id/:idProyeccion',
     name: 'Boleteria',
     component: BoleteriaView
+  },
+  {
+    path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',
+    name: 'Asientos',
+    component: AsientosView
   },
   {
     path: '/gerente',
     name: 'GerenteHome',
     component: GerenteHomeView,
+
     //meta: { requiresAuth: true, }
+    meta: { requiresAuth: true, }
+  },
+  {
+    path: '/invitado',
+    name: 'GuestLogin',
+    component: GuestLoginView
   }
 ];
 

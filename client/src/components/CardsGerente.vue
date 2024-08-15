@@ -8,10 +8,14 @@ const props = defineProps({
   colorIndex: Number
 });
 
-const emits = defineEmits(["handleAction"]);
+const emits = defineEmits(["handleAction", "showSavedItems"]);
 
 function redirectoToForms(e) {
   emits("handleAction", e);
+}
+
+function redirectToSaveItems(e) {
+  emits('showSavedItems', e)
 }
 
 const colors = [
@@ -37,6 +41,7 @@ const colors = [
     </div>
     <div>
       <Button @click="redirectoToForms" id="btn-info" text="More info"></Button>
+      <Button @click="redirectToSaveItems" id="btn-show" text="Ver guardados"></Button>
     </div>
   </div>
 </template>
@@ -51,5 +56,9 @@ const colors = [
   border-radius: 8px;
   margin: 10px;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+#btn-show {
+  margin-left: 4px;
 }
 </style>

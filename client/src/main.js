@@ -10,7 +10,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-}); */
+*/
 
 const app = createApp(App)
 app.use(router)

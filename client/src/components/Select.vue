@@ -1,10 +1,16 @@
 <script setup>
+import { defineEmits } from 'vue';
 
+const emits = defineEmits(['handleEvent'])
+
+function getItemValue(e) {
+  emits('handleEvent', e)
+}
 </script>
 
 
 <template>
-  <select class="custom-select">
+  <select class="custom-select" @change="getItemValue">
     <slot></slot>
   </select>
 </template>

@@ -1,128 +1,137 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRoute } from 'vue-router'
+import { onMounted, ref, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import Boleteria from "../components/Boleteria.vue";
 import BoleteriaHeader from "../components/BoleteriaHeader.vue";
-import Boleteria from '../components/Boleteria.vue'
-import Total from '../components/Total.vue'
-import Button from '../components/Button.vue'
+import Button from "../components/Button.vue";
+import { BACKEND_URL } from "../config/data";
 
-import { BACKEND_URL } from '../config/data'
+const router = useRoute();
+const route = useRouter();
 
-const totalTickets = ref({})
-const totalOfTickets = ref(0)
-const total = ref(0.00)
-const tickets = ref([])
-const ticketsByChair = ref({})
+const proyeccion = ref(router.params.idProyeccion);
+const data = ref([]);
+const pricesPerChair = ref({});
+const tickets = ref({});
+const totalTicketsSelected = ref(0);
 
-function updateTotalOfTickets(ticket, type, price) {
-  (totalTickets.value)[type] = [parseInt(ticket.value), price]
-
-  totalOfTickets.value = 0
-  Object.keys(totalTickets.value).forEach(key => {
-    totalOfTickets.value += (totalTickets.value)[key]
-  })
-
-  getTotalToPay()
-}
-
-function getTotalToPay() {
-  total.value = 0.00
-  Object.keys(totalTickets.value).forEach(key => {
-    total.value += parseFloat((totalTickets.value)[key][1] * (totalTickets.value)[key][0])
-  })
-}
-
-async function fetchTickets() {
+async function fetchData() {
   try {
-    const route = useRoute()
-    const idParam = route.params.id
-    const res = await fetch(BACKEND_URL + `/boletos/precios/${idParam}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application-json'
-      }
-    })
-    const tickets = await res.json()
-    return tickets
-  } catch(err) {
-    console.log('error while getting tickets')
+    const res = await fetch(
+      BACKEND_URL + `/boletos/precios/${proyeccion.value}`
+    );
+    const data = await res.json();
+    return data.data;
+  } catch (err) {
+    console.log(err);
   }
 }
 
-const data = await fetchTickets()
-tickets.value = data?.data
+data.value = await fetchData();
 
-console.log('proyeccion: ', data?.proyeccion)
-console.log(tickets.value)
+data.value.forEach((el) => {
+  if (!pricesPerChair.value[el.Nombre]) pricesPerChair.value[el.Nombre] = [];
 
-tickets.value.forEach(el => {
-  if (!ticketsByChair.value[el.ID_Asiento]) ticketsByChair.value[el.ID_Asiento] = []
+  pricesPerChair.value[el.Nombre].push(el);
+});
 
-  ticketsByChair.value[el.ID_Asiento].push(el)
-})
+function calculatePrice(price, pricePerChair) {
+  return price + pricePerChair;
+}
 
-const regularChair = ref(ticketsByChair.value[1])
-const dboxChair = ref(ticketsByChair.value[2])
-const thirdChair = ref(ticketsByChair.value[3])
-const desChair = ref(ticketsByChair.value[4])
-const fourthChair = ref(ticketsByChair.value[5])
-const premierChair = ref(ticketsByChair.value[6])
+function updateTotalTickets(e, tipo, precio, tipoAsiento) {
+  const value = parseInt(e.value);
+  tickets.value[tipo + tipoAsiento] = [value, precio];
 
-console.log('REGULAR CHAIR', regularChair.value)
-console.log(dboxChair.value)
-console.log(premierChair.value)
+  totalTicketsSelected.value = 0;
+  Object.keys(tickets.value).forEach((key) => {
+    totalTicketsSelected.value += tickets.value[key][0];
+  });
+}
+
+const total = computed(() => {
+  let sum = 0;
+  Object.keys(tickets.value).forEach((key) => {
+    sum += tickets.value[key][0] * tickets.value[key][1];
+  });
+  return sum;
+});
 
 onMounted(async () => {
-  await fetchTickets()
-})
+  await fetchData();
+});
+
+function rediretToGetChairs() {
+  if (totalTicketsSelected.value <= 0 || totalTicketsSelected.value > 10) {
+    alert("Tienes que elegir una cantidad de boletos entre 1 y 10");
+    return;
+  }
+  const sucursal = router.params.sucursal;
+  const name = router.params.name;
+  const id = router.params.id;
+  const idProyeccion = router.params.idProyeccion;
+
+  const CHAIR_URL = `/${sucursal}/proyecciones/${name}/${id}/${idProyeccion}/asientos`;
+  route.push({ path: CHAIR_URL });
+}
 </script>
 
 <template>
-  <div id="container">
-    <div>
-      <div>
-        <BoleteriaHeader title="SILLA GENERAL"></BoleteriaHeader>
-        <Boleteria v-for="ticket in regularChair" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
+  <div id="main-tickets-container">
+    <template v-for="(value, key) in pricesPerChair" :key="key">
+      <BoleteriaHeader :title="value[0].Nombre"></BoleteriaHeader>
+      <div v-for="(el, idx) in value" :key="idx">
+        <Boleteria
+          :precio="calculatePrice(el.Precio, el.Valor_Agregado)"
+          :tipo="el.Tipo"
+          :key="el.id || idx"
+          @handle-function="
+            (e) =>
+              updateTotalTickets(
+                e,
+                el.Tipo,
+                el.Precio + el.Valor_Agregado,
+                el.Nombre
+              )
+          "
+        ></Boleteria>
       </div>
-      <div v-if="premierChair">
-        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
-        <Boleteria v-for="ticket in premierChair" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
+    </template>
+    <div id="footer-container-info">
+      <div id="footer-container-info-tickets">
+        <h4>TOTAL: L.{{ total }}</h4>
+        <div>
+          <i class="fa-solid fa-ticket"></i>
+          <span>x{{ totalTicketsSelected }}</span>
+        </div>
       </div>
-      <div v-if="dboxChair">
-        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
-        <Boleteria v-for="ticket in dboxChair" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
-      </div>
-      <div v-if="premierChair">
-        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
-        <Boleteria v-for="ticket in tickets" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
-      </div>
-      <div v-if="premierChair">
-        <BoleteriaHeader  title="SILLA PREMIER"></BoleteriaHeader>
-        <Boleteria v-for="ticket in tickets" :key="ticket.ID" :precio="ticket.PRECIO" :tipo="ticket.RANGO" @handleFunction="(event) => updateTotalOfTickets(event, ticket.RANGO, ticket.PRECIO)"></Boleteria>
-      </div>
-     <!--  <Boleteria precio="85.00" tipo="niños" @handleFunction="(event) => updateTotalOfTickets(event, 'niños', 85.00)"></Boleteria>
-      <Boleteria precio="60.00" tipo="estudiantes" @handleFunction="(event) => updateTotalOfTickets(event, 'estudiantes', 60.00)"></Boleteria>
-      <Boleteria precio="50.00" tipo="tercera edad" @handleFunction="(event) => updateTotalOfTickets(event, 'tercera edad', 50.00)"></Boleteria> -->
-    </div>
-    <div id="footer">
-      <Total :total="total"></Total>
-      <Button text="CONTINUAR"></Button>
+      <Button text="Siguiente" @handle-click="rediretToGetChairs"></Button>
     </div>
   </div>
 </template>
 
 <style scoped>
-#container {
-  width: 80vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+#main-tickets-container {
+  width: 100%;
 }
 
-#footer {
+#footer-container-info {
+  display: flex;
+  flex-direction: column;
+}
+
+#footer-container-info-tickets {
   display: flex;
   justify-content: space-between;
-  width: 70%;
-  padding: 10px;
+  align-items: center;
+}
+
+i {
+  font-size: 30px;
+  margin-right: 10px;
+}
+
+span {
+  font-size: 20px
 }
 </style>

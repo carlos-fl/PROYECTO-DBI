@@ -1,12 +1,18 @@
 <script setup>
-import { defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
 
 const props = defineProps({
   optionValue: String,
-  text: String
+  text: String,
+  selectedValue: String 
+})
+
+const isSelected = computed(() => {
+  return props.selectedValue == JSON.parse(props.optionValue).Nombre
 })
 </script>
 
 <template>
-  <option value="optionValue">{{ text }}</option>
+  <option :value="optionValue" :selected="isSelected">{{ text }}</option>
 </template>
+
