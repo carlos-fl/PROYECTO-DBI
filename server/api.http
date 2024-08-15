@@ -12,7 +12,7 @@ GET http://localhost:3000/gerente
 
 
 ### obtener boletos
-GET http://localhost:3000/boletos/precios
+GET http://localhost:3000/boletos/precios/2
 
 ### obtener boletos por tipo de proyeccion
 
@@ -29,3 +29,9 @@ Content-Type: application/json
 
 ### get all movies
 GET http://localhost:3000/peliculas/emision
+
+### obtener numero sala
+GET http://localhost:3000/boletos/proyecciones/2
+
+### get seats
+GET http://localhost:3000/boletos/asientos/2

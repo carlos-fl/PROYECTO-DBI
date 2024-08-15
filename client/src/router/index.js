@@ -4,6 +4,7 @@ import BoleteriaView from '../views/BoleteriaView.vue';
 import HomeView from '../views/HomeView.vue'
 import GerenteHomeView from '../views/GerenteHomeView.vue'
 import GerenteFormsView from '../views/GerenteFormsView.vue'
+import AsientosView from '../views/AsientosView.vue'
 import Prueba from '../views/Prueba.vue'
 import GuestLoginView from '../views/GuestLoginView.vue'
 
@@ -36,9 +37,14 @@ const routes = [
     component: Prueba
   },
   {
-    path: '/boleteria/:id',
+    path: '/:sucursal/proyecciones/:name/:id/:idProyeccion',
     name: 'Boleteria',
     component: BoleteriaView
+  },
+  {
+    path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',
+    name: 'Asientos',
+    component: AsientosView
   },
   {
     path: '/gerente',

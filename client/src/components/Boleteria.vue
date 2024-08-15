@@ -1,18 +1,21 @@
 <script setup>
-import {defineProps, defineEmits } from "vue";
+import { ref, defineProps, defineEmits } from "vue";
 const props = defineProps({
   tipo: String,
   precio: Number,
+  // tickets: Number
 });
 
 const MAXTICKETSTOBUY = ref(10)
-const ticketsSelected = ref(0)
+// const ticketsSelected = ref(props.tickets)
 
 const emits = defineEmits(['handleFunction'])
 
 function getValueSelected(e) {
   emits('handleFunction', e.target)
 }
+
+// watch(() => props.tickets, (newValue) => ticketsSelected.value = newValue)
 </script>
 
 <template>
@@ -24,7 +27,7 @@ function getValueSelected(e) {
       </div>
       <div>
         <select @change="getValueSelected">
-          <option v-for="i in MAXTICKETSTOBUY - ticketsSelected" :key="i" :value="i">{{ i }}</option>
+          <option v-for="i in MAXTICKETSTOBUY + 1" :key="i" :value="i - 1">{{ i - 1 }}</option>
         </select>
       </div>
     </div>

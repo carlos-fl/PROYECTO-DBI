@@ -9,7 +9,7 @@ const props = defineProps({
 <template>
   <div>
     <div id="title">
-      <h3>{{ title }}</h3>
+      <h3>Asientos {{ title }}</h3>
     </div>
     <div id="header-container">
       <span>TIPO</span>
