@@ -1,15 +1,25 @@
 <script setup>
 import { defineProps, defineEmits, computed } from 'vue';
-import { addSeat, removeSeat, getTicketsInfo, getSeats } from '../store/store';
+import { addSeat, removeSeat, getTicketsInfo, getSeats, isInSeats } from '../store/store';
 
 const props = defineProps({
   seatType: String,
   seatId: Number,
   seatNumber: String,
+  totalByType: Number,
   totalTickets: Number,
   isAble: Boolean,
   isTaken: Boolean 
 })
+
+function countSeatsByType(type, arr) {
+  let total = 0
+  arr.forEach(el => {
+    if (el[el.length - 1] == type) total++
+  })
+  return total
+}
+
 const colorsBySeatType = {
   Standard: 'Standar',
   VIP: 'VIP',
@@ -30,17 +40,17 @@ tickets.forEach(el => {
 const canSelect = seatTypes.includes(props.seatType)
 const emits = defineEmits(['handle-click'])
 function selectSeat(e) {
-  if (!props.isTaken && props.isAble && canSelect) {
+  if (!props.isTaken && props.isAble && canSelect && !isInSeats(e.target)) {
     const seats = getSeats()
-    if (seats.length > props.totalTickets - 1) {
-      const [id, seat, number, type] = removeSeat() 
-      seat.classList.remove('taken')
+    const max = countSeatsByType(props.seatType, seats)
+    if (max > props.totalByType - 1) {
+      const seat = (removeSeat(props.seatType))[1]
+      seat.classList.remove('selected')
       seat.classList.add(colorsBySeatType[props.seatType])
     }
-    e.target.classList.remove('available')
+    e.target.classList.remove(colorsBySeatType[props.seatType])
     e.target.classList.add('selected')
     addSeat([props.seatId, e.target, props.seatNumber, props.seatType])
-    console.log(seats)
   } 
 }
 

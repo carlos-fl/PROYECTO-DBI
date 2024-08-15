@@ -1,12 +1,12 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import Asientos from '../components/Asientos.vue';
 import AsientosHeader from '../components/AsientosHeader.vue';
 import AsientosProyeccionInfo from '../components/AsientosProyeccionInfo.vue';
 import Header from '../components/Header.vue';
 import Button from '../components/Button.vue';
-import { getTotalTickets, getSeats } from '../store/store';
+import { getTotalTickets, getSeats, getTicketsInfo } from '../store/store';
 import { BACKEND_URL } from '../config/data';
 
 const router = useRoute()
@@ -38,13 +38,20 @@ onMounted(async () => {
   await fetchProyeccionData()
 })
 
+const total = getTicketsInfo()
+function getValue(arr) {
+  arr.forEach(el => {
+    const type = el[0].split('-')[1]
+    seatsByType.value[type] = el[1]
+  })
+}
+
+getValue(total)
+
 seats.value.forEach(seat => {
   // getting seats by row
   if (!seatsByRow.value[seat.Numero_Asiento[0]]) seatsByRow.value[seat.Numero_Asiento[0]] = []
   seatsByRow.value[seat.Numero_Asiento[0]].push(seat)
-
-  // getting seats by type
-  seatsByType.value[seat.Nombre] = 0
 })
 
 function updateQuantityOfTickets() {
@@ -75,6 +82,7 @@ const colorsBySeatType = ref({
   Premium: 'premium' 
 })
 
+
 // select quantity corresponding to types of seats selected
 
 /* ticketsByTypeAndQuantity.forEach(ticket => {
@@ -82,6 +90,18 @@ const colorsBySeatType = ref({
   ticketsQuantity.value[seatType] = ticket[1]
 })
  */
+
+const route = useRouter()
+
+function redirectToCounter() {
+//http://localhost:5173/Sucursal%20Centro/proyecciones/Inception/11/2/asientos
+  const sucursal = router.params.sucursal
+  const pelicula = router.params.name
+  const id = router.params.id
+  const idProyeccion = router.params.idProyeccion
+  const URL = `/${sucursal}/proyecciones/${pelicula}/${id}/${idProyeccion}/dulceria`
+  route.push({ path: URL })
+}
 </script>
 
 
@@ -94,7 +114,7 @@ const colorsBySeatType = ref({
       <AsientosProyeccionInfo :poster="info.Poster" :titulo="info.Titulo" :fecha="info.Fecha" :horario="info.Horario" :clasificacion="info.TIPO" :doblada="info.Doblada"></AsientosProyeccionInfo>
     <AsientosHeader></AsientosHeader>
     <div id="seats" v-for="(value, key) in seatsByRow" :key="key">
-      <Asientos :total-Tickets=totalTicketsToBeSelected v-for="(seat, index) in value" :seat-type="seat.Nombre" :seat-number="seat.Numero_Asiento" :seat-id=seat.ID :key="index" :is-able=seat.Habilitado :is-taken=seat.Ocupado></Asientos>
+      <Asientos :total-Tickets=totalTicketsToBeSelected v-for="seat in value" :seat-type="seat.Nombre" :total-by-type="seatsByType[seat.Nombre]" :seat-number="seat.Numero_Asiento" :seat-id=seat.ID :key="seat.ID" :is-able=seat.Habilitado :is-taken=seat.Ocupado></Asientos>
     </div>
     <div>
       <div id="info-container">
@@ -120,7 +140,7 @@ const colorsBySeatType = ref({
         <h3 v-for="(seat, index) in seatsSelected" :key="index">{{ seat[2] }} <span> </span></h3>
       </div>
     </div>
-    <Button text="Siguiente"></Button>
+    <Button text="Siguiente" @handle-click="redirectToCounter"></Button>
   </div>
 </template>
 

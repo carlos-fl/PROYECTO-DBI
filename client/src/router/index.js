@@ -42,6 +42,11 @@ const routes = [
     component: BoleteriaView
   },
   {
+    path: "/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria",
+    name: 'Dulceria',
+    component: Prueba
+  },
+  {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',
     name: 'Asientos',
     component: AsientosView
