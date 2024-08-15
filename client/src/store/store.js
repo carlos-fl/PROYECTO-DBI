@@ -46,8 +46,24 @@ export function addSeat(arrayInfo) {
     //store.seats.push(arrayInfo)
 }
  
-export function removeSeat() {
-  return store.seats.shift()
+export function removeSeat(type) {
+  for (let i = 0; i < store.seats.length; i++) {
+    if (store.seats[i][store.seats[i].length - 1] == type) {
+      const swap = store.seats[i]
+      store.seats[i] = store.seats[0]
+      store.seats[0] = swap
+      return store.seats.shift()
+    }
+  }
+  return []
+}
+
+export function isInSeats(tag) {
+  let isIn = false
+  store.seats.forEach(el => {
+    if (el[1] == tag) isIn = true
+  })
+  return isIn
 }
 
 export function getSeats() {
