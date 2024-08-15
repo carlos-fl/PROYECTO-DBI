@@ -7,6 +7,7 @@ import GerenteFormsView from '../views/GerenteFormsView.vue'
 import AsientosView from '../views/AsientosView.vue'
 import Prueba from '../views/Prueba.vue'
 import GuestLoginView from '../views/GuestLoginView.vue'
+import SnackSelectionView from '../views/SnackSelectionView.vue'
 
 
 const routes = [
@@ -45,7 +46,7 @@ const routes = [
   {
     path: "/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria",
     name: 'Dulceria',
-    component: Prueba
+    component: SnackSelectionView
   },
   {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',
