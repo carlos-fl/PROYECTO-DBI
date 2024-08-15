@@ -8,14 +8,18 @@
 
     const patterns = {
         id: "(\\d{4}-?){2}\\d{5}",
-        name: "[a-zA-Z]{3,10}",
-        surname: "[a-zA-Z]{3,10}", 
+        firstName: "[a-zA-Z]{3,10}",
+        middleName: "[a-zA-Z]{3,10}",
+        firstSurname: "[a-zA-Z]{3,10}",
+        secondSurname: "[a-zA-Z]{3,10}",
         phoneNumber: "(3[1-3]|8[7-9]|9[3-9])\\d{6}",
         email: "[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}"
     }
     const userID = ref("");
-    const userName = ref("");
-    const userSurname = ref("");
+    const userFirstName = ref("");
+    const userMiddleName = ref("");
+    const userFirstSurname = ref("");
+    const userSecondSurname = ref("");
     const userPhoneNumber = ref("");
     const userEmail = ref("");
 
@@ -35,8 +39,10 @@
 
     function register(){
         const inputData = { id: userID.value, 
-                            name: userName.value, 
-                            surname: userSurname.value, 
+                            firstName: userFirstName.value, 
+                            middleName: userMiddleName.value, 
+                            firstSurname: userFirstSurname.value, 
+                            secondSurname: userSecondSurname.value, 
                             phoneNumber: userPhoneNumber.value, 
                             email: userEmail.value 
                         }
@@ -71,10 +77,16 @@
         userID.value = currentValue.trim();
     }
 
-    function currentUserName(currentValue) {
+    function currentUserFirstName(currentValue) {
         userName.value = currentValue.trim();
     }
-    function currentUserSurname(currentValue) {
+    function currentUserMiddleName(currentValue) {
+        userName.value = currentValue.trim();
+    }
+    function currentUserFirstSurname(currentValue) {
+        userSurname.value = currentValue.trim();
+    }
+    function currentUserSecondSurname(currentValue) {
         userSurname.value = currentValue.trim();
     }
     function currentUserPhoneNumber(currentValue) {
@@ -91,8 +103,10 @@
     <Form>
         <FormHeader text="Inicio Sesión Invitado"></FormHeader>
         <Input @currentValue="currentUserId" id="id" inputType="text" minLength=13 maxLength=13  placeholder="DNI" ></Input>
-        <Input @currentValue="currentUserName" id="name" inputType="text" minLength=3 maxLength=10  placeholder="Nombre"></Input>
-        <Input @currentValue="currentUserSurname" id="surname" inputType="text" minLength=3 maxLength=10  placeholder="Apellido"></Input>
+        <Input @currentValue="currentUserFirstName" id="firstName" inputType="text" minLength=3 maxLength=10  placeholder="Primer Nombre"></Input>
+        <Input @currentValue="currentUserMiddleName" id="middleName" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Nombre"></Input>
+        <Input @currentValue="currentUserFirstSurname" id="firstSurname" inputType="text" minLength=3 maxLength=10  placeholder="Primer Apellido"></Input>
+        <Input @currentValue="currentUserSecondSurname" id="secondSurname" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Apellido"></Input>
         <Input @currentValue="currentUserPhoneNumber" id="email" inputType="text" minLength=8 maxLength=8  placeholder="Telefono"></Input>
         <Input @currentValue="currentUserEmail" id="phoneNumber" inputType="email" minLength=10 maxLength=30  placeholder="Correo"></Input>
         <Button text="Continuar" @handleClick="register"></Button>
