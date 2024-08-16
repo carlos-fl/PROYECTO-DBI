@@ -5,9 +5,6 @@ import SnackCard from '../components/SnackCard.vue'
 import { BACKEND_URL } from '../config/data';
 import Button from '../components/Button.vue'
 
-const paths = ref([ ])
-const names = ref([ ])
-const prices = ref([ ])
 const combos = ref([ ])
 const total = ref(0)
 
@@ -42,7 +39,6 @@ function  updateTotal(id,totalPerProduct) {
     total.value = sum 
     console.log("valor:  " + total.value.toFixed(2) + " id: " + id)
 };
-
 
 
 onMounted(async () => {
