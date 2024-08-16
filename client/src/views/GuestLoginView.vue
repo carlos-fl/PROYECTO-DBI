@@ -5,6 +5,7 @@
     import  FormHeader  from '../components/FormHeader.vue';
     import { ref } from 'vue';
     import { BACKEND_URL } from '../config/data';
+    import { useRouter } from 'vue-router';
 
     const patterns = {
         id: "(\\d{4}-?){2}\\d{5}",
@@ -22,6 +23,7 @@
     const userSecondSurname = ref("");
     const userPhoneNumber = ref("");
     const userEmail = ref("");
+    const router = useRouter()
 
     function validateInputs(inputData){
         let flag = true;
@@ -59,6 +61,7 @@
                 .then((response) => {
                     if (response.status == 200){
                         console.log("Usuario creado correctamente");
+                        router.push({ name: 'Boleteria' })
                     }
                 })
                 .catch((err) => {
@@ -100,20 +103,29 @@
 
 
 <template>
-    <Form>
-        <FormHeader text="Inicio Sesión Invitado"></FormHeader>
-        <Input @currentValue="currentUserId" id="id" inputType="text" minLength=13 maxLength=13  placeholder="DNI" ></Input>
-        <Input @currentValue="currentUserFirstName" id="firstName" inputType="text" minLength=3 maxLength=10  placeholder="Primer Nombre"></Input>
-        <Input @currentValue="currentUserMiddleName" id="middleName" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Nombre"></Input>
-        <Input @currentValue="currentUserFirstSurname" id="firstSurname" inputType="text" minLength=3 maxLength=10  placeholder="Primer Apellido"></Input>
-        <Input @currentValue="currentUserSecondSurname" id="secondSurname" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Apellido"></Input>
-        <Input @currentValue="currentUserPhoneNumber" id="email" inputType="text" minLength=8 maxLength=8  placeholder="Telefono"></Input>
-        <Input @currentValue="currentUserEmail" id="phoneNumber" inputType="email" minLength=10 maxLength=30  placeholder="Correo"></Input>
-        <Button text="Continuar" @handleClick="register"></Button>
-    </Form>
+    <div id="main-container">
+        <Form>
+            <FormHeader text="Inicio Sesión Invitado"></FormHeader>
+            <Input @currentValue="currentUserId" id="id" inputType="text" minLength=13 maxLength=13  placeholder="DNI" ></Input>
+            <Input @currentValue="currentUserFirstName" id="firstName" inputType="text" minLength=3 maxLength=10  placeholder="Primer Nombre"></Input>
+            <Input @currentValue="currentUserMiddleName" id="middleName" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Nombre"></Input>
+            <Input @currentValue="currentUserFirstSurname" id="firstSurname" inputType="text" minLength=3 maxLength=10  placeholder="Primer Apellido"></Input>
+            <Input @currentValue="currentUserSecondSurname" id="secondSurname" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Apellido"></Input>
+            <Input @currentValue="currentUserPhoneNumber" id="email" inputType="text" minLength=8 maxLength=8  placeholder="Telefono"></Input>
+            <Input @currentValue="currentUserEmail" id="phoneNumber" inputType="email" minLength=10 maxLength=30  placeholder="Correo"></Input>
+            <Button text="Continuar" @handleClick="register"></Button>
+        </Form>
+
+    </div>
 </template>
 
 <style scoped>
+    #main-container{
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
     Input:invalid{
         border-color: #fd6161;
         box-shadow: inset 0px 0px 8px 0px #fd6161;
