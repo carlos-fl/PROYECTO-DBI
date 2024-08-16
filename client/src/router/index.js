@@ -8,6 +8,7 @@ import AsientosView from '../views/AsientosView.vue'
 import Prueba from '../views/Prueba.vue'
 import GuestLoginView from '../views/GuestLoginView.vue'
 import SnackSelectionView from '../views/SnackSelectionView.vue'
+import FacturacionView from '../views/facturacionView.vue'
 
 
 const routes = [
@@ -44,7 +45,7 @@ const routes = [
     component: BoleteriaView
   },
   {
-    path: "/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria",
+    path: '/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria',
     name: 'Dulceria',
     component: SnackSelectionView
   },
@@ -63,6 +64,11 @@ const routes = [
     path: '/invitado',
     name: 'GuestLogin',
     component: GuestLoginView
+  },
+  {
+    path: '/facturacion',
+    name: 'Facturacion',
+    component: FacturacionView
   }
 ];
 
