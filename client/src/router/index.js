@@ -29,7 +29,8 @@ const routes = [
   {
     path: '/gerente/form/:feature',
     name: 'GerenteFeatures',
-    component: GerenteFormsView 
+    component: GerenteFormsView,
+    meta: { requiresAuth: true, }
   },
   {
     path: '/:sucursal/proyecciones/:name/:id',
