@@ -19,12 +19,12 @@ gerenteRouter.post("/login", async (req: Request, res: Response) => {
       return res.status(401).json({ message: "User not found", data: {} });
 
     const password: string = req.body.password;
-    const isMatchPass = bcrypt.compareSync(password, userResult.contrasena)
+    const isMatchPass = bcrypt.compareSync(password, userResult.Contrasena)
     if (!isMatchPass)
       return res.status(401).json({ message: "Invalid credentials", data: {} });
 
     const dbWorkerRes = await sql.query(
-      `SELECT * FROM EMPLEADOS WHERE ID = ${userResult.ID_Empleado}`
+      `SELECT * FROM Empleados WHERE ID = ${userResult.ID_Empleado}`
     );
     const worker = dbWorkerRes.recordset[0];
 
@@ -83,7 +83,7 @@ gerenteRouter.post('/nuevo', async (req: Request, res: Response) => {
       const SALTS: number = Number(process.env.SALTS) || 10
       // creation of persona record
       const encryptedPassword: string = bcrypt.hashSync(admin.Contrasena, SALTS)
-      await sql.query(`insert into Personas values ('${persona.DNI}', '${persona.Nombre1}', '${persona.Nombre2}', '${persona.Apellido1}', '${persona.Apellido2}', '${persona.Correo}')`)
+      await sql.query(`insert into Personas values ('${persona.DNI}', '${persona.Nombre1}', '${persona.Nombre2}', '${persona.Apellido1}', '${persona.Apellido2}', '${persona.Correo}', '00000000')`)
       // creation of contract record
       let contractRes;
       if (contract.fechaFin) {
@@ -107,7 +107,7 @@ gerenteRouter.post('/nuevo', async (req: Request, res: Response) => {
       })
     } else {
       // record in table Personas
-      await sql.query(`insert into Personas values ('${persona.DNI}', '${persona.Nombre1}', '${persona.Nombre2}', '${persona.Apellido1}', '${persona.Apellido2}', '${persona.Correo}')`)
+      await sql.query(`insert into Personas values ('${persona.DNI}', '${persona.Nombre1}', '${persona.Nombre2}', '${persona.Apellido1}', '${persona.Apellido2}', '${persona.Correo}', '00000000')`)
       const personaCreated = (await sql.query(`select ID from Personas where DNI like '${persona.DNI}'`)).recordset[0]
       // record in table Contratos
       let contractRes

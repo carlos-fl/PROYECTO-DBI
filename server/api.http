@@ -2,8 +2,8 @@ POST http://localhost:3000/gerente/login
 Content-Type: application/json
 
 {
-  "user": "carlos_flores12",
-  "password": "superContra"
+  "user": "carlos_flores13",
+  "password": "hola1234"
 }
 
 ### prueba get
@@ -43,15 +43,15 @@ Content-Type: application/json
 {
   "isAdmin": 1,
   "persona": {
-    "DNI": "0612197300089",
+    "DNI": "0801200415962",
     "Nombre1": "Juan",
     "Nombre2": "Carlos",
     "Apellido1": "Flores",
-    "Apellido2": "Avila",
-    "Correo": "carlos.avila@gmail.com"
+    "Apellido2": "Trujillo",
+    "Correo": "carlos.flores@gmail.com"
   },
   "contrato": {
-    "tipoContrato": "Temporal",
+    "tipoContrato": "Permanente",
     "fechaInicio": "2024-08-13",
     "fechaFin": "2026-08-13"
   },
@@ -64,7 +64,7 @@ Content-Type: application/json
     "Habilitado": 1
   },
   "admin": {
-    "Usuario": "carlos_avila13",
+    "Usuario": "carlos_flores13",
     "Contrasena": "hola1234",
     "Habilitado": 1
   }
