@@ -3,7 +3,7 @@ import sql from "mssql";
 import jwt from "jsonwebtoken";
 import bcrypt from 'bcrypt'
 import { empleadoSchema, personaSchema, adminSchema, contratoSchema } from "../schemas/schemas";
-import { verifyToken } from "../middlewares/authMiddleware";
+import { upload } from "../middlewares/imageMiddleware";
 
 export const gerenteRouter: Router = Router();
 
@@ -133,7 +133,7 @@ gerenteRouter.post('/nuevo', async (req: Request, res: Response) => {
 })
 
 
-gerenteRouter.get('/cargos', async (req: Request, res: Response) => {
+gerenteRouter.get('/cargos',  async (req: Request, res: Response) => {
   try {
     const result = await sql.query("select * from Cargos")
     return res.status(200).json({
@@ -154,5 +154,83 @@ gerenteRouter.get('/jornadas', async (req: Request, res: Response) => {
     })
   } catch(err) {
     return res.status(500).json({ message: 'Could not handle data' })
+  }
+})
+
+
+gerenteRouter.get('/clasificaciones', async (req: Request, res: Response) => {
+  try {
+    const result = await sql.query("select * from Clasificacion")
+    return res.status(200).json({
+      message: 'success',
+      data: result.recordset
+    })
+  } catch(err) {
+    return res.status(500).json({ message: 'Could not handle data' })
+  }
+})
+
+gerenteRouter.get('/idiomas', async (req: Request, res: Response) => {
+  try {
+    const result = await sql.query("select * from Idiomas")
+    return res.status(200).json({
+      message: 'success',
+      data: result.recordset
+    })
+  } catch(err) {
+    return res.status(500).json({ message: 'Could not handle data' })
+  }
+})
+
+gerenteRouter.get('/cast', async (req: Request, res: Response) => {
+  try {
+    const result = await sql.query("select * from Reparto")
+    return res.status(200).json({
+      message: 'success',
+      data: result.recordset
+    })
+  } catch(err) {
+    return res.status(500).json({ message: 'Could not handle data' })
+  }
+})
+
+gerenteRouter.get('/estados', async (req: Request, res: Response) => {
+  try {
+    const result = await sql.query("select * from Estados")
+    return res.status(200).json({
+      message: 'success',
+      data: result.recordset
+    })
+  } catch(err) {
+    return res.status(500).json({ message: 'Could not handle data' })
+  }
+})
+
+gerenteRouter.post('/peliculas/nuevo', upload.single('poster'), async (req: Request, res: Response) => {
+  const movieInfo = req.body
+  const sucursales = JSON.parse(movieInfo.sucursales)
+  const cast = JSON.parse(movieInfo.cast)
+  const file = req.file
+  const posterPath: string = file?.path || ''
+  try {
+    await sql.query(`insert into Peliculas values ('${movieInfo.titulo}', '${movieInfo.sinopsis}', ${movieInfo.duracion}, '${movieInfo.fechaEstreno}', '${posterPath}', ${movieInfo.idioma}, ${movieInfo.estado}, ${movieInfo.clasificacion})`)
+    const movieId: number = (await sql.query(`select top 1 * from Peliculas order by ID desc;`)).recordset[0].ID
+    
+    // save every movie and branch in Peliculas_Sucursales
+    sucursales.forEach(async (id: number) => {
+      await sql.query(`insert into Peliculas_Sucursales values (${movieId}, ${id})`)
+    })
+
+    // save every actor/director and movie in Pelicula_Cast
+    cast.forEach(async (id: number) => {
+      await sql.query(`insert into Pelicula_Cast values (${movieId}, ${id})`)
+    })
+
+    return res.status(200).json({
+      message: 'Película guardada exitosamente'
+    })
+
+  } catch(err) {
+    return res.status(500).json({ message: 'error while saving movie' })
   }
 })

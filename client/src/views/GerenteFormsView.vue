@@ -11,6 +11,7 @@
   
  // components views
  import GerenteEmpleadoView from "./GerenteEmpleadoView.vue";
+ import GerentePeliculasForm from "./GerentePeliculasForm.vue";
 
   const router = useRoute()
   const currentView = ref(router.params.feature) 
@@ -45,32 +46,7 @@
       </Form>
     </div>
     <div v-if="currentView == 'peliculas'">
-      <Form>
-        <FormHeader text="Agregar película"></FormHeader>
-        <Input input-type="text" maxLength="50" minLength="2" placeholder="Titulo de pelicula"></Input>
-        <Input input-type="text" maxLength="200" minLength="10" placeholder="Sinopsis de pelicula"></Input>
-        <Input input-type="number" maxLength="250" minLength="45" placeholder="Duración en minutos"></Input>
-        <label>Fecha de estreno</label>
-        <Input input-type="date" placeholder="Duración en minutos"></Input>
-        <label>Poster de la película</label>
-        <Input input-type="file" accept="image/png, image/jpg"></Input>
-        <Select>
-          <Option text="Idioma original"></Option>
-          <Option option-value="1" text="Inglés"></Option>
-        </Select>
-        <!-- 
-        TODO: todas las películas son proximamente cuando se ingresan al sistema
-        <Select>
-          <Option text="Estado de la película"></Option>
-          <Option option-value="1" text="próximamente"></Option>
-        </Select> 
-        -->
-        <Select>
-          <Option text="Clasificación"></Option>
-          <Option option-value="1" text="Mayores de 13 años"></Option>
-        </Select>
-        <Button text="Guardar"></Button>
-      </Form>
+      <GerentePeliculasForm></GerentePeliculasForm>
     </div>
     <div v-if="currentView == 'sucursales'">
       <Form>
