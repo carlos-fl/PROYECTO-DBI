@@ -1,16 +1,28 @@
 <template>
-  <div class="projection-card" v-if="projections.length > 0">
-    <h3>Proyecciones para {{ projections[0].Titulo }} en la sucursal {{ route.params.sucursal }}</h3>
-    <div v-for="projection in projections" :key="projection.id" class="projection-details">
-      <div class="projection-datetime">{{ formatDate(projection.Fecha) }} a las {{ formatTime(projection.Horario) }}</div>
-      <p><strong>Sala:</strong> {{ projection.ID_Sala }}</p>
-      <p><strong>Sucursal:</strong> {{ projection.ID_Sucursal }}</p>
-      <p><strong>Subtitulada:</strong> {{ projection.Subtitulada ? 'Sí' : 'No' }}</p>
-      <p><strong>Doblada:</strong> {{ projection.Doblada ? 'Sí' : 'No' }}</p>
+  <div class="movie-view">
+    <div class="movie-header">
+      <img :src="moviePoster" alt="Movie Poster" class="movie-poster" />
+      <div class="movie-details">
+        <h1>{{ projections[0]?.Titulo }}</h1>
+        <p><strong>Director:</strong> {{ director }}</p>
+        <p><strong>Reparto:</strong> {{ cast.join(', ') }}</p>
+        <p><strong>Sinopsis:</strong> {{ synopsis }}</p>
+      </div>
     </div>
-  </div>
-  <div v-else>
-    <p>No se encontraron proyecciones para la película seleccionada en esta sucursal.</p>
+
+    <div class="projection-list">
+      <h2>Proyecciones en la sucursal {{ route.params.sucursal }}</h2>
+      <div v-for="dateGroup in groupedProjections" :key="dateGroup.date" class="projection-group">
+        <h3>{{ formatDate(dateGroup.date) }}</h3>
+        <div v-for="projection in dateGroup.projections" :key="projection.id" class="projection-detail">
+          <span class="projection-format">{{ projectionFormat(projection) }}</span>
+          <span class="projection-time">{{ formatTime(projection.Horario) }}</span>
+          <span class="projection-room">Sala: {{ projection.ID_Sala }}</span>
+          <span class="projection-dub">{{ projection.Doblada ? 'Doblada' : '' }}</span>
+          <span class="projection-sub">{{ projection.Subtitulada ? 'Subtitulada' : '' }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -20,6 +32,11 @@ import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const projections = ref([]);
+const moviePoster = ref('');
+const director = ref('');
+const cast = ref([]);
+const synopsis = ref('');
+const groupedProjections = ref([]);
 
 const fetchProjections = async () => {
   const sucursalId = route.params.sucursal;
@@ -34,63 +51,81 @@ const fetchProjections = async () => {
     } else {
       const data = await response.json();
       projections.value = data;
+      groupProjectionsByDate();
+      // Assuming you fetch the additional movie details in the response
+      moviePoster.value = data[0]?.Poster || '';
+      director.value = data[0]?.Director || '';
+      cast.value = data[0]?.Cast || [];
+      synopsis.value = data[0]?.Sinopsis || '';
     }
   } catch (error) {
     console.error("Failed to fetch projections:", error);
   }
 };
 
-const formatDate = (dateStr) => {
-    try {
-        // Directly create a Date object using the date string
-        const dateObj = new Date(dateStr);
-        
-        // Check if the date object is valid
-        if (isNaN(dateObj.getTime())) {
-            return 'Fecha Inválida';
-        }
-
-        // Format the date to the desired format
-        return dateObj.toLocaleDateString('es-ES', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-        });
-    } catch (error) {
-        console.error("Error formatting date:", error);
-        return 'Fecha Inválida';
+const groupProjectionsByDate = () => {
+  const groups = {};
+  projections.value.forEach(projection => {
+    const date = projection.Fecha;
+    if (!groups[date]) {
+      groups[date] = [];
     }
+    groups[date].push(projection);
+  });
+
+  groupedProjections.value = Object.keys(groups).map(date => ({
+    date,
+    projections: groups[date],
+  }));
 };
 
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+};
 
 const formatTime = (timeStr) => {
-    try {
-        const [hours, minutes] = timeStr.split(':');
-        console.log(`${hours}:${minutes}`);
-        return `${hours}:${minutes}`;
-    } catch (error) {
-        console.error("Error formatting time:", error);
-        return 'Hora Inválida';
-    }
+  const [hours, minutes] = timeStr.split(':');
+  return `${hours}:${minutes}`;
 };
 
+const projectionFormat = (projection) => {
+  const formats = [];
+  formats.push(projection.ID_Tipo_Proyeccion === 1 ? '2D' : '3D');
+  if (projection.Doblada) formats.push('DOB');
+  if (projection.Subtitulada) formats.push('SUB');
+  return formats.join(' ');
+};
 
 onMounted(fetchProjections);
 </script>
 
 <style scoped>
-.projection-card {
-  background-color: #1d1d1f;
+.movie-view {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  border-radius: 10px;
-  max-width: 400px;
-  margin: 20px auto;
-  color: #ffffff;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
-.projection-details {
+.movie-header {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.movie-poster {
+  width: 300px;
+  margin-right: 20px;
+}
+
+.movie-details {
+  max-width: 600px;
+}
+
+.projection-list {
+  margin-top: 20px;
+}
+
+.projection-group {
   margin-top: 20px;
   padding: 15px;
   border: 1px solid #444;
@@ -98,9 +133,19 @@ onMounted(fetchProjections);
   background-color: #292929;
 }
 
-.projection-datetime {
-  font-size: 18px;
+.projection-detail {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.projection-format, .projection-time, .projection-room {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.projection-dub, .projection-sub {
+  color: #ffcc00;
   font-weight: bold;
-  margin-bottom: 10px;
 }
 </style>
