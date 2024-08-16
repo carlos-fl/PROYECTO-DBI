@@ -8,9 +8,6 @@ import Button from '../components/Button.vue'
 const combos = ref([ ])
 const total = ref(0)
 
-
-//hacer el fetch
-
 async function fetchCombos (){
     try {
         const res = await fetch(BACKEND_URL + '/boletos/combos')
@@ -23,22 +20,22 @@ async function fetchCombos (){
 }
 
 function  updateTotal(id,totalPerProduct) {
-    // const result = parseInt(value)*parseInt(price) 
     let selectValues = [];
     let sum = 0;
-
     Array.from(document.querySelectorAll("select")).map((item) => {
         selectValues.push(parseInt(item.value));
     })
-    console.log("combos.precio: " + combos.value[0].Precio)
 
     for (let i=0; i < combos.value.length; i++){
         console.log(combos.value[i].Precio);
-        sum += parseInt(combos.value[i].Precio)*selectValues[i]
+        sum += combos.value[i].Precio*selectValues[i]
     }
     total.value = sum 
-    console.log("valor:  " + total.value.toFixed(2) + " id: " + id)
 };
+
+function storeInfo (){
+
+}
 
 
 onMounted(async () => {
