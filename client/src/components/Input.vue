@@ -21,7 +21,7 @@ function getCurrentValue(e) {
 
 <template>
   <input
-    @change="getCurrentValue"
+    @input="getCurrentValue"
     :type="inputType"
     :minlength="minLength"
     :maxlength="maxLength"

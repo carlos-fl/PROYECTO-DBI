@@ -43,25 +43,29 @@ Content-Type: application/json
 {
   "isAdmin": 1,
   "persona": {
-    "DNI": "0801200415962",
+    "DNI": "0612197300089",
     "Nombre1": "Juan",
     "Nombre2": "Carlos",
     "Apellido1": "Flores",
-    "Apellido2": "Trujillo",
-    "Correo": "carlos.flores@gmail.com"
+    "Apellido2": "Avila",
+    "Correo": "carlos.avila@gmail.com"
+  },
+  "contrato": {
+    "tipoContrato": "Temporal",
+    "fechaInicio": "2024-08-13",
+    "fechaFin": "2026-08-13"
   },
   "empleado": {
     "ID_Cargo": 1,
     "ID_Sucursal": 1,
-    "ID_Contrato": 1,
-    "Salario": 1200.50,
+    "Salario": 1890.50,
     "ID_Jornada": 3,
-    "Numero_Empleado": 12,
+    "Numero_Empleado": 13,
     "Habilitado": 1
   },
   "admin": {
-    "Usuario": "carlos_flores12",
-    "Contrasena": "superContra",
+    "Usuario": "carlos_avila13",
+    "Contrasena": "hola1234",
     "Habilitado": 1
   }
 }

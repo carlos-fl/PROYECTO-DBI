@@ -32,3 +32,9 @@ export const adminSchema = z.object({
   Habilitado: z.boolean(),
   ID_Empleado: z.number()
 })
+
+export const contratoSchema = z.object({
+  TipoContrato: z.string(),
+  fechaInicio: z.string(),
+  fechaFin: z.string()
+})

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { salaSchema } from "../schemas/salas";
+import { salaSchema } from "../schemas/schemas";
 import sql from 'mssql'
 
 export const salasRouter: Router = Router()

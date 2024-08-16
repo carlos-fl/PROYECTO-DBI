@@ -1,6 +1,6 @@
 <script setup>
   import { useRoute } from "vue-router";
-  import { ref } from "vue";
+  import { ref, onMounted } from "vue";
   import Form from '../components/Form.vue'
   import FormHeader from '../components/FormHeader.vue'
   import Input from '../components/Input.vue'
@@ -8,9 +8,13 @@
   import Option from "../components/Option.vue";
   import Button from "../components/Button.vue";
   import { BACKEND_URL } from "../config/data";
+  
+ // components views
+ import GerenteEmpleadoView from "./GerenteEmpleadoView.vue";
 
   const router = useRoute()
   const currentView = ref(router.params.feature) 
+
 </script>
 
 
@@ -101,36 +105,7 @@
       </Form>
     </div>
     <div v-if="currentView == 'empleados'">
-      <Form>
-        <FormHeader text="Agregar empleado"></FormHeader>
-        <Input input-type="text" :max-length="13" :min-length="13" placeholder="DNI"></Input>
-        <Input input-type="text" :max-length="23" :min-length="3" placeholder="Primer Nombre"></Input>
-        <Input input-type="text" :max-length="23" :min-length="3" placeholder="Segundo Nombre"></Input>
-        <Input input-type="text" :max-length="23" :min-length="3" placeholder="Primer Apellido"></Input>
-        <Input input-type="text" :max-length="23" :min-length="3" placeholder="Segundo Apellido"></Input>
-        <Input input-type="email" :max-length="30" :min-length="12" placeholder="Correo"></Input>
-        <!-- TODO: fetch data from backend to bring all data in table cargos -->
-        <Select>
-          <Option text="Escoja cargo del empleado"></Option>
-          <Option option-value="1" text="caja"></Option>
-          <Option option-value="2" text="boletería"></Option>
-        </Select>
-        <!-- TODO: fetch data from backend to bring data in table jornadas -->
-        <Select>
-          <Option text="Escoja jornada del empleado"></Option>
-          <Option option-value="1" text="vespertino"></Option>
-        </Select>
-        <!-- TODO: fetch data to bring data in table contratos -->
-        <Select>
-          <Option text="Escoja tipo contrato del empleado"></Option>
-          <Option option-value="1" text="permanente"></Option>
-        </Select>
-        <label>Fecha contratación</label>
-        <Input input-type="date" placeholder="Fecha contratación"></Input>
-        <label>Fecha finalización contrato</label>
-        <Input input-type="date" placeholder="Fecha finalización contrato"></Input>
-        <Button text="Guardar"></Button>
-      </Form>
+      <GerenteEmpleadoView></GerenteEmpleadoView>
     </div>
   </div>
 </template>
