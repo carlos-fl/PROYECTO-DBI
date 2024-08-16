@@ -97,9 +97,9 @@ ticketsRouter.get('/asientos/:id', async (req: Request, res: Response) => {
   }
 })
 
-ticketsRouter.get('/combos',async (req: Request, res: Response)=> {
+ticketsRouter.get('/combos',async (req: Request, res: Response) => {
   try {
-    const result = await sql.query(`SELECT * FROM Combos`)
+    const result = await sql.query(`SELECT * FROM Combos WHERE Habilitado = ${1}`)
     return res.status(200).json({ message: 'success', data: result.recordset })
   } catch (error) {
     return res.status(500)

@@ -1,12 +1,14 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import SnackCard from '../components/SnackCard.vue'
 import { BACKEND_URL } from '../config/data';
 import Button from '../components/Button.vue'
 
 const combos = ref([ ])
 const total = ref(0)
+const route = useRoute();
+const router = useRouter();
 
 async function fetchCombos (){
     try {
@@ -19,21 +21,33 @@ async function fetchCombos (){
     }
 }
 
-function  updateTotal(id,totalPerProduct) {
+function  updateTotal() {
     let selectValues = [];
     let sum = 0;
     Array.from(document.querySelectorAll("select")).map((item) => {
         selectValues.push(parseInt(item.value));
     })
 
-    for (let i=0; i < combos.value.length; i++){
-        console.log(combos.value[i].Precio);
-        sum += combos.value[i].Precio*selectValues[i]
-    }
+    combos.value.forEach((item, index) => {
+        sum += item.Precio*selectValues[index]
+    })
+
     total.value = sum 
 };
 
 function storeInfo (){
+    localStorage.setItem("total",total.value)
+    Array.from(document.querySelectorAll("select")).forEach((item, index) => {
+        selectValues.push(parseInt(item.value));
+    })
+    localStorage.setItem("productIDs", combos.value.map((item) => {item.ID}) )
+
+}
+
+function redirect (){
+    // storeInfo()
+    const NEXT_URL = `/facturacion`;
+    router.push({ path: NEXT_URL })
 
 }
 
@@ -48,12 +62,12 @@ onMounted(async () => {
 <template>
     <div id="mainContainer">
         <h3 v-if="combos.length == 0"> No existen combos </h3>
-        <SnackCard v-for="combo in combos" :id="combo.ID" :imagePath="combo.Imagen" :name="combo.Nombre" :price="combo.Precio.toFixed(2)" @totalPerCard="updateTotal"></SnackCard>
+        <SnackCard class="Snack-card" v-for="combo in combos" :id="combo.ID" :imagePath="combo.Imagen" :name="combo.Nombre" :price="combo.Precio.toFixed(2)" @totalPerCard="updateTotal"></SnackCard>
     </div>
     <footer>
         <div id="total-button">
             <h4>Total: L {{ total.toFixed(2) }}</h4>
-            <Button :text="'Continuar'" @click=""></Button>
+            <Button :text="'Continuar'" @click="redirect"></Button>
         </div>
     </footer>
 </template>
@@ -61,10 +75,12 @@ onMounted(async () => {
 <style scoped>
     #mainContainer{
         display: grid;
+        height: 108vh;
         grid-template-columns: 1fr;
         grid-auto-flow: row;
-        gap: 0.7rem;
+        gap: 0.8rem;
         justify-items: center;
+        margin-bottom: 7rem;
     }
     footer,#total-button {
         display: flex;
@@ -76,7 +92,7 @@ onMounted(async () => {
         bottom: 0px;
         left: 0px;
         width: 100vw;
-        height: 8vh;
+        height: 5vh;
         background-color: #E1F387;
         padding: 20px;
         font-size: 18px;
@@ -91,7 +107,18 @@ onMounted(async () => {
     Button{
         transition: box-shadow 0.3s ease;
     }
-    Button:hover {
+    .Snack-card {
+        transition: box-shadow 0.3s ease;
+        transition: transform 0.3s ease;
+    }
+
+    Button:hover,
+    .Snack-card:hover {
         box-shadow: 0 4px 8px rgba(100, 108, 255, 0.5);
     }
+
+    .Snack-card:hover {
+        transform: scale(1.02);
+    }
+
 </style>
