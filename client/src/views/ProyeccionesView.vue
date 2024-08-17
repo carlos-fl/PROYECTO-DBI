@@ -1,7 +1,7 @@
 <template>
   <div class="movie-view">
     <div class="movie-header">
-      <img :src="moviePoster" alt="Movie Poster" class="movie-poster" />
+      <img :src="posterPath" alt="Movie Poster" class="movie-poster" />
       <div class="movie-details">
         <h1>{{ projections[0]?.Titulo }}</h1>
         <p><strong>Director:</strong> {{ director }}</p>
@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="projection-list">
+     <div class="projection-list">
       <h2>Proyecciones en la sucursal {{ route.params.sucursal }}</h2>
       <div v-for="dateGroup in groupedProjections" :key="dateGroup.date" class="projection-group">
         <h3>{{ formatDate(dateGroup.date) }}</h3>
@@ -27,16 +27,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 const route = useRoute();
 const projections = ref([]);
-const moviePoster = ref('');
+const rawPosterPath = ref(''); 
 const director = ref('');
 const cast = ref([]);
 const synopsis = ref('');
 const groupedProjections = ref([]);
+
+const posterPath = computed(() => {
+  if (!rawPosterPath.value) return '';
+  const img = rawPosterPath.value.split(/[/\\]/);  
+  return `/public/${img[img.length - 1]}`; 
+});
 
 const fetchProjections = async () => {
   const sucursalId = route.params.sucursal;
@@ -52,11 +58,13 @@ const fetchProjections = async () => {
       const data = await response.json();
       projections.value = data;
       groupProjectionsByDate();
-      // Assuming you fetch the additional movie details in the response
-      moviePoster.value = data[0]?.Poster || '';
-      director.value = data[0]?.Director || '';
-      cast.value = data[0]?.Cast || [];
-      synopsis.value = data[0]?.Sinopsis || '';
+
+      // Fetch and set movie details
+      const movieDetails = data[0]; // assuming all projections belong to the same movie
+      rawPosterPath.value = movieDetails.Poster || '';
+      director.value = movieDetails.Director || '';
+      cast.value = movieDetails.Cast ? movieDetails.Cast.split(',') : [];
+      synopsis.value = movieDetails.Sinopsis || '';
     }
   } catch (error) {
     console.error("Failed to fetch projections:", error);
@@ -92,8 +100,6 @@ const formatTime = (timeStr) => {
 const projectionFormat = (projection) => {
   const formats = [];
   formats.push(projection.ID_Tipo_Proyeccion === 1 ? '2D' : '3D');
-  if (projection.Doblada) formats.push('DOB');
-  if (projection.Subtitulada) formats.push('SUB');
   return formats.join(' ');
 };
 

@@ -24,15 +24,26 @@ clientProjectionRouter.get('/proyecciones/:sucursal/:name/:id', async (req, res)
                     p.ID_Sucursal,
                     p.Subtitulada,
                     p.Doblada,
-                    pel.Titulo
+                    pel.Titulo,
+                    pel.Sinopsis,
+                    pel.Poster,
+                    STRING_AGG(CASE WHEN r.Director = 1 THEN r.Nombre + ' ' + r.Apellido ELSE '' END, ', ') AS Director,
+                    STRING_AGG(CASE WHEN r.Actor = 1 THEN r.Nombre + ' ' + r.Apellido END, ', ') AS Cast
                 FROM Proyecciones p
                 INNER JOIN Peliculas pel ON p.ID_Pelicula = pel.ID
+                LEFT JOIN Pelicula_Cast pc ON pel.ID = pc.ID_Pelicula
+                LEFT JOIN Reparto r ON pc.ID_Reparto = r.ID
                 WHERE p.ID_Sucursal = @ID_Sucursal 
                 AND p.ID_Pelicula = @ID_Pelicula
                 AND LOWER(pel.Titulo) = @Titulo
+                GROUP BY 
+                    p.ID, p.Fecha, p.Horario, p.ID_Tipo_Proyeccion, p.ID_Pelicula, 
+                    p.ID_Sala, p.ID_Sucursal, p.Subtitulada, p.Doblada, 
+                    pel.Titulo, pel.Sinopsis, pel.Poster
             `);
 
-             // Log the results to verify the changes
+        // Log the results to verify the changes
+        console.log('Formatted SQL Query Result:', result.recordset);
 
         if (result.recordset.length > 0) {
             res.json(result.recordset);
