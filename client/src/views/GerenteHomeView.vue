@@ -3,17 +3,24 @@ import { useRouter } from "vue-router";
 import Header from "../components/Header.vue";
 import Button from "../components/Button.vue";
 import CardsGerente from "../components/CardsGerente.vue";
-import { onMounted } from "vue";
+import { BACKEND_URL } from "../config/data";
 
 const router = useRouter();
-
-function logOut() {}
+ 
+async function logOut() {
+  await fetch(BACKEND_URL + "/gerente/logout", {
+    credentials: 'include'
+  })
+  const URL = "/gerente/login"
+  router.push({ path: URL })
+}
 
 function redirectoToForms(e, feature) {
   const redirectPath = `/gerente/form/${feature}`;
   router.push({ path: redirectPath })
   //window.location = redirectPath;
 }
+
 </script>
 
 <template>

@@ -2,8 +2,8 @@ POST http://localhost:3000/gerente/login
 Content-Type: application/json
 
 {
-  "user": "usuario",
-  "password": "contra"
+  "user": "carlos_flores13",
+  "password": "hola1234"
 }
 
 ### prueba get
@@ -32,3 +32,40 @@ GET http://localhost:3000/peliculas/emision
 
 ### obtener numero sala
 GET http://localhost:3000/boletos/proyecciones/2
+
+### get seats
+GET http://localhost:3000/boletos/asientos/2
+
+### create superAdmin
+POST http://localhost:3000/gerente/nuevo
+Content-Type: application/json
+
+{
+  "isAdmin": 1,
+  "persona": {
+    "DNI": "0801200415962",
+    "Nombre1": "Juan",
+    "Nombre2": "Carlos",
+    "Apellido1": "Flores",
+    "Apellido2": "Trujillo",
+    "Correo": "carlos.flores@gmail.com"
+  },
+  "contrato": {
+    "tipoContrato": "Permanente",
+    "fechaInicio": "2024-08-13",
+    "fechaFin": "2026-08-13"
+  },
+  "empleado": {
+    "ID_Cargo": 1,
+    "ID_Sucursal": 1,
+    "Salario": 1890.50,
+    "ID_Jornada": 3,
+    "Numero_Empleado": 13,
+    "Habilitado": 1
+  },
+  "admin": {
+    "Usuario": "carlos_flores13",
+    "Contrasena": "hola1234",
+    "Habilitado": 1
+  }
+}

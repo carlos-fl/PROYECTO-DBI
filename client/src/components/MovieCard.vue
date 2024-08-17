@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
 
 const props = defineProps({
@@ -18,12 +18,17 @@ function redirectToMovie() {
   router.push({ path: URL })
 }
 
+const posterPath = computed(() => {
+  const img = props.poster.split('\\')
+  const newPath = `/public/${img[img.length - 1]}`
+  return newPath
+})
 </script>
 
 <template>
   <div id="movie-container">
     <div id="movie-img-container" @click="redirectToMovie">
-      <img :src="poster" :alt="movieTitle" class="movie-poster">
+      <img :src="`${posterPath}`" :alt="movieTitle" class="movie-poster">
     </div> 
     <div id="movie-title-container">
       <h3>{{ movieTitle }}</h3>

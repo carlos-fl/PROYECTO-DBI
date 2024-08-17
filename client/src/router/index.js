@@ -6,6 +6,9 @@ import GerenteHomeView from '../views/GerenteHomeView.vue'
 import GerenteFormsView from '../views/GerenteFormsView.vue'
 import AsientosView from '../views/AsientosView.vue'
 import Prueba from '../views/Prueba.vue'
+import GuestLoginView from '../views/GuestLoginView.vue'
+import SnackSelectionView from '../views/SnackSelectionView.vue'
+import FacturacionView from '../views/facturacionView.vue'
 
 
 const routes = [
@@ -28,7 +31,8 @@ const routes = [
   {
     path: '/gerente/form/:feature',
     name: 'GerenteFeatures',
-    component: GerenteFormsView 
+    component: GerenteFormsView,
+    meta: { requiresAuth: true, }
   },
   {
     path: '/:sucursal/proyecciones/:name/:id',
@@ -41,6 +45,11 @@ const routes = [
     component: BoleteriaView
   },
   {
+    path: '/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria',
+    name: 'Dulceria',
+    component: SnackSelectionView
+  },
+  {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',
     name: 'Asientos',
     component: AsientosView
@@ -50,6 +59,16 @@ const routes = [
     name: 'GerenteHome',
     component: GerenteHomeView,
     meta: { requiresAuth: true, }
+  },
+  {
+    path: '/invitado',
+    name: 'GuestLogin',
+    component: GuestLoginView
+  },
+  {
+    path: '/facturacion',
+    name: 'Facturacion',
+    component: FacturacionView
   }
 ];
 

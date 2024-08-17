@@ -2,22 +2,19 @@ import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import router from "./router";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import Cookies from 'js-cookie'
 
-library.add(faPhone);
-
-/* 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth) {
-    next("/gerente/login");
+  const jwt = Cookies.get('access_token'); // Get the JWT from cookies
+  if (to.meta.requiresAuth && !jwt) {
+    // If route requires auth and JWT is not present, redirect to login
+    next('/gerente/login');
   } else {
+    // Otherwise, proceed as normal
     next();
   }
 });
- */
+
 const app = createApp(App)
-app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(router)
 app.mount('#app')
