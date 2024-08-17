@@ -56,22 +56,31 @@ function redirectPreviousView(){
 }
 
 // function showReceipt(){
-
+//    alert("Pago realizado correctamente")
 // }
 
 </script>
 
 <template>
-    <Form>
-        <Input @currentValue="currentCardNumber" :type="'text'" :placeholder="'Número de Tarjeta'" :minlength="16" :maxlength="16"></Input>
-        <Input @currentValue="currentExpirationDate" :type="'date'" :placeholder="'Fecha de Expiración'" ></Input>
-        <Input @currentValue="currentSecurityNumber" :type="'text'" :placeholder="'Código de Seguridad'" :minlength="3" :maxlength="4"></Input>
-        <Button :text="'Volver'" @handleClick="redirectPreviousView"></Button>
-        <Button :text="'Pagar'"  @handleClick=""></Button>
-    </Form>
+    <div id="main-container">
+        <Form>
+            <Input @currentValue="currentCardNumber" :type="'text'" :placeholder="'Número de Tarjeta'" :minlength="16" :maxlength="16"></Input>
+            <Input @currentValue="currentExpirationDate" :type="'date'" :placeholder="'Fecha de Expiración'" ></Input>
+            <Input @currentValue="currentSecurityNumber" :type="'text'" :placeholder="'Código de Seguridad'" :minlength="3" :maxlength="4"></Input>
+            <Button :text="'Volver'" @handleClick="redirectPreviousView"></Button>
+            <Button :text="'Pagar'"  @handleClick=""></Button>
+        </Form>
+    </div>
 </template>
 
 <style scoped>
+    #main-container {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     Input:invalid{
         border-color: #fd6161;
         box-shadow: inset 0px 0px 8px 0px #fd6161;
