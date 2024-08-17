@@ -21,13 +21,19 @@ const getDate = computed(() => {
 const getSchedule = computed(() => {
   return (props.horario.split('T', 2))[1].substring(0, 5)
 })
+
+const posterPath = computed(() => {
+  const img = props.poster.split('\\')
+  const newPath = `/public/${img[img.length - 1]}`
+  return newPath
+})
 </script>
 
 
 <template>
   <div id="proyeccion-container">
     <div id="proyeccion-container-img">
-      <img :src="poster" :alt="titulo">
+      <img :src="`${posterPath}`" :alt="titulo">
     </div> 
     <div id="proyeccion-container-info">
       <h2>{{ titulo }} {{visualization }}</h2>
