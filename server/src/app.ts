@@ -35,9 +35,6 @@ app.use('/api', proyeccionesRouter);
 app.use('/api', clientProjectionRouter);
 
 //AUTORIZACION
-app.use(verifyToken);
-
-
 app.use('/boletos', ticketsRouter);
 app.use("/gerente", gerenteRouter);
 app.use('/salas', salasRouter);
@@ -50,3 +47,6 @@ app.get("/", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`Express is listening at http://localhost:${port}`);
 });
+
+app.use(verifyToken);
+

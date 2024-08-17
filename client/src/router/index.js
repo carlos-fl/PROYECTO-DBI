@@ -5,6 +5,7 @@ import HomeView from '../views/HomeView.vue';
 import GerenteHomeView from '../views/GerenteHomeView.vue';
 import GerenteFormsView from '../views/GerenteFormsView.vue';
 import AsientosView from '../views/AsientosView.vue';
+import Prueba from '../views/Prueba.vue';
 //import GuestLoginView from '../views/GuestLoginView.vue';
 
 const routes = [

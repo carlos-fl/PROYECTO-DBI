@@ -44,11 +44,11 @@ Content-Type: application/json
   "isAdmin": 1,
   "persona": {
     "DNI": "0801200415962",
-    "Nombre1": "Juan",
-    "Nombre2": "Carlos",
-    "Apellido1": "Flores",
-    "Apellido2": "Trujillo",
-    "Correo": "carlos.flores@gmail.com"
+    "Nombre1": "Eros",
+    "Nombre2": "Daniel",
+    "Apellido1": "Rivera",
+    "Apellido2": "Buezo",
+    "Correo": "eros.rivera@gmail.com"
   },
   "contrato": {
     "tipoContrato": "Permanente",
@@ -64,7 +64,7 @@ Content-Type: application/json
     "Habilitado": 1
   },
   "admin": {
-    "Usuario": "carlos_flores13",
+    "Usuario": "eros_rivera89",
     "Contrasena": "hola1234",
     "Habilitado": 1
   }
