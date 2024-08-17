@@ -12,6 +12,8 @@
  // components views
  import GerenteEmpleadoView from "./GerenteEmpleadoView.vue";
  import GerentePeliculasForm from "./GerentePeliculasForm.vue";
+ import GerenteSalasView from './GerenteSalasView.vue'
+ 
 
   const router = useRoute()
   const currentView = ref(router.params.feature) 
@@ -34,12 +36,7 @@
       </Form>
     </div>
     <div v-if="currentView == 'salas'">
-      <Form>
-        <FormHeader text="Agregar sala"></FormHeader>
-        <Input input-type="number" max-length="30" min-length="1" placeholder="Numero de sala"></Input>
-        <Input input-type="number" max-length="250" min-length="85" placeholder="Capacidad"></Input>
-        <Button text="Guardar"></Button>
-      </Form>
+      <GerenteSalasView></GerenteSalasView>
     </div>
     <div v-if="currentView == 'peliculas'">
       <GerentePeliculasForm></GerentePeliculasForm>

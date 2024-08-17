@@ -21,7 +21,6 @@ function redirectToMovie() {
 const posterPath = computed(() => {
   const img = props.poster.split('\\')
   const newPath = `/public/${img[img.length - 1]}`
-  console.log(props.poster, newPath)
   return newPath
 })
 </script>
