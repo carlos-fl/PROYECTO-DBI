@@ -23,12 +23,12 @@ ticketsRouter.get(
     try {
       const result = await sql.query(`
                       select distinct Tipos_Asientos.Nombre, Tipos_Asientos.Valor_Agregado, Precios.Precio, Rango_Edades.Tipo  from Proyecciones
-                      join Asientos_Salas on Proyecciones.ID_Sala = Asientos_Salas.ID_Sala
-                      join Asientos on Asientos_Salas.ID_Asiento = Asientos.ID
+                      join Salas on Proyecciones.ID_Sala = Salas.ID
+                      join Asientos on Salas.ID = Asientos.ID_Sala
                       join Tipos_Asientos on Asientos.ID_Tipo_Asiento = Tipos_Asientos.ID
                       join Precios on Proyecciones.ID_Tipo_Proyeccion = Precios.ID_Tipo_Proyeccion
                       join Rango_Edades on Precios.ID_Rango_Edades = Rango_Edades.ID
-                      where Proyecciones.ID = ${id};
+                      where Proyecciones.ID = ${id}
                     `);
 
       res.status(200).json({

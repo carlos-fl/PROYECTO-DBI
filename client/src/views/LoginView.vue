@@ -32,7 +32,7 @@ function fetchData() {
       res
         .json()
         .then((response) => {
-          if (res.status == 200 && response.habilitado) {
+          if (res.status == 200) {
             const urlPath = "/gerente" 
             router.push({ path: urlPath })
           }

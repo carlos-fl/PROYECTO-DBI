@@ -2,8 +2,8 @@ POST http://localhost:3000/gerente/login
 Content-Type: application/json
 
 {
-  "user": "carlos_flores12",
-  "password": "superContra"
+  "user": "carlos_flores13",
+  "password": "hola1234"
 }
 
 ### prueba get
@@ -50,18 +50,22 @@ Content-Type: application/json
     "Apellido2": "Trujillo",
     "Correo": "carlos.flores@gmail.com"
   },
+  "contrato": {
+    "tipoContrato": "Permanente",
+    "fechaInicio": "2024-08-13",
+    "fechaFin": "2026-08-13"
+  },
   "empleado": {
     "ID_Cargo": 1,
     "ID_Sucursal": 1,
-    "ID_Contrato": 1,
-    "Salario": 1200.50,
+    "Salario": 1890.50,
     "ID_Jornada": 3,
-    "Numero_Empleado": 12,
+    "Numero_Empleado": 13,
     "Habilitado": 1
   },
   "admin": {
-    "Usuario": "carlos_flores12",
-    "Contrasena": "superContra",
+    "Usuario": "carlos_flores13",
+    "Contrasena": "hola1234",
     "Habilitado": 1
   }
 }
