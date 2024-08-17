@@ -10,13 +10,11 @@ import GuestLoginView from '../views/GuestLoginView.vue'
 import SnackSelectionView from '../views/SnackSelectionView.vue'
 import FacturacionView from '../views/facturacionView.vue'
 
-
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeView 
-   // redirect: '/login'
+    component: HomeView
   },
   {
     path: '/:sucursal',
@@ -37,7 +35,12 @@ const routes = [
   {
     path: '/:sucursal/proyecciones/:name/:id',
     name: 'Proyeccion',
-    component: Prueba
+    component: () => import('../views/ProyeccionesView.vue') // Toy probando
+  },
+  {
+    path: '/guest-login/:idProyeccion',
+    name: 'GuestLogin',
+    component: GuestLoginView
   },
   {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion',
@@ -58,13 +61,14 @@ const routes = [
     path: '/gerente',
     name: 'GerenteHome',
     component: GerenteHomeView,
-    meta: { requiresAuth: true, }
+    meta: { requiresAuth: true }
   },
-  {
+/*  {
     path: '/invitado',
     name: 'GuestLogin',
     component: GuestLoginView
-  },
+<<<<<<< HEAD
+  }*/
   {
     path: '/facturacion',
     name: 'Facturacion',

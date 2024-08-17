@@ -47,34 +47,37 @@
     </div>
     <div v-if="currentView == 'sucursales'">
       <Form>
-        <FormHeader text="Agregar sala"></FormHeader>
-        <Input></Input>
-        <Input></Input>
-        <Input></Input>
+        <FormHeader text="Agregar Sucursal"></FormHeader>
+        <Input placeholder="Nombre de la sucursal" v-model="nombre" />
+        <Input placeholder="Dirección" v-model="direccion" />
+        <Input placeholder="Teléfono" v-model="telefono" />
+        <Button text="Guardar" @click="saveSucursal"></Button>
       </Form>
     </div>
     <div v-if="currentView == 'productos'">
       <Form>
-        <FormHeader text="Agregar sala"></FormHeader>
-        <Input></Input>
-        <Input></Input>
-        <Input></Input>
+        <FormHeader text="Agregar Producto"></FormHeader>
+        <Input placeholder="Nombre del producto" v-model="nombre" />
+        <Input placeholder="Descripción" v-model="descripcion" />
+        <Input placeholder="Precio" v-model="precio" type="number" />
+        <Button text="Guardar" @click="saveProducto"></Button>
       </Form>
     </div>
     <div v-if="currentView == 'combos'">
       <Form>
-        <FormHeader text="Agregar sala"></FormHeader>
-        <Input></Input>
-        <Input></Input>
-        <Input></Input>
+        <FormHeader text="Agregar Combo"></FormHeader>
+        <Input placeholder="Nombre del combo" v-model="nombre" />
+        <Input placeholder="Items incluidos" v-model="items" />
+        <Input placeholder="Precio del combo" v-model="precio" type="number" />
+        <Button text="Guardar" @click="saveCombo"></Button>
       </Form>
     </div>
     <div v-if="currentView == 'clasificaciones'">
       <Form>
-        <FormHeader text="Agregar sala"></FormHeader>
-        <Input></Input>
-        <Input></Input>
-        <Input></Input>
+        <FormHeader text="Agregar Clasificación"></FormHeader>
+        <Input placeholder="Tipo de clasificación" v-model="tipo" />
+        <Input placeholder="Descripción" v-model="descripcion" />
+        <Button text="Guardar" @click="saveClasificacion"></Button>
       </Form>
     </div>
     <div v-if="currentView == 'empleados'">
@@ -82,6 +85,38 @@
     </div>
   </div>
 </template>
+
+<script>
+function handleSaveProjection() {
+  
+}
+
+function handleSavePrice() {
+  
+}
+
+function handleSaveRoom() {
+  
+}
+
+function saveSucursal() {
+
+  console.log('Saving sucursal:', { nombre: nombre.value, direccion: direccion.value, telefono: telefono.value });
+}
+
+function saveProducto() {
+  console.log('Saving producto:', { nombre: nombre.value, descripcion: descripcion.value, precio: precio.value });
+}
+
+function saveCombo() {
+  console.log('Saving combo:', { nombre: nombre.value, items: items.value, precio: precio.value });
+}
+
+function saveClasificacion() {
+  console.log('Saving clasificacion:', { tipo: tipo.value, descripcion: descripcion.value });
+}
+
+</script>
 
 
 <style scoped>

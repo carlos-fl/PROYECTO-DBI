@@ -40,7 +40,7 @@ const colors = [
       <h5>{{ description }}</h5>
     </div>
     <div>
-      <Button @click="redirectoToForms" id="btn-info" text="More info"></Button>
+      <Button @click="redirectoToForms" id="btn-info" text="Agregar"></Button>
       <Button @click="redirectToSaveItems" id="btn-show" text="Ver guardados"></Button>
     </div>
   </div>
