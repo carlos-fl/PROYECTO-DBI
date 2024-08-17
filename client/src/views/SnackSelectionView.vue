@@ -76,6 +76,7 @@ onMounted(async () => {
     #mainContainer{
         display: grid;
         height: 108vh;
+        width: 100%;
         grid-template-columns: 1fr;
         grid-auto-flow: row;
         gap: 0.8rem;
