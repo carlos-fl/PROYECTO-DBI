@@ -11,7 +11,7 @@ clientRouter.get("/emision/:branchID", async (req: Request, res: Response) => {
       await sql.query(`select Peliculas.ID, Peliculas.Titulo, Peliculas.Duracion_en_minutos, Peliculas.Poster, Clasificacion.TIPO from peliculas
                         join Clasificacion on Peliculas.ID_Clasificacion = Clasificacion.ID
                         join Estados on Peliculas.ID_Estado = Estados.ID
-                        join Peliculas_Sucursales on Peliculas.ID = Peliculas_Sucursales.ID_Pelicua
+                        join Peliculas_Sucursales on Peliculas.ID = Peliculas_Sucursales.ID_Pelicula
                         where Estados.estado like 'En emision' and Peliculas_Sucursales.ID_Sucursal = ${branchID};
 `);
 
