@@ -37,19 +37,18 @@ function  updateTotal() {
 
 function retrieveInfo (){
     let productsInfo = []
-    // localStorage.setItem("total",total.value)
+    localStorage.setItem("total",total.value)
     Array.from(document.querySelectorAll("select")).forEach((item, index) => {
         let product = { id: combos.value[index].ID , quantity: parseInt(item.value), price: combos.value[index].Precio }
         productsInfo.push(product);
     })
+    localStorage.setItem("productInfo", JSON.stringify(productsInfo))
     return productsInfo;
 }
 
 function redirect (){
     let productsInfo = retrieveInfo()
-    // const NEXT_URL = `/facturacion`;
-    // router.push({ path: NEXT_URL })
-    router.push({ name: 'Facturacion', params: { data: productsInfo, dni: localStorage.getItem("id"), totalPurchase: total.value } })
+    router.push({ name: 'Facturacion'})
 }
 
 

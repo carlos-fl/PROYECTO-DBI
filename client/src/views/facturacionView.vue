@@ -63,7 +63,10 @@ function payment(){
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(route.params.data)
+            body: JSON.stringify({ dni: localStorage.getItem("dni"), 
+                                    totalValue: parseFloat(localStorage.getItem("total")),
+                                    productInfo: JSON.parse(localStorage.getItem("productInfo"))
+                                })
         })
         .then((res) => {
             res.json()

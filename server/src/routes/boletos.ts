@@ -108,14 +108,15 @@ ticketsRouter.get('/combos',async (req: Request, res: Response) => {
 
 ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
   try {
-    const { dni } = req.params
-    const subTotalPurchase: number = Number(req.params.totalPurchase)
+    const { dni, totalValue, productsInfo } = req.body
+    const subTotalPurchase: number = totalValue
     console.log(subTotalPurchase)
     const lastReceipt = await sql.query(`SELECT TOP 1 * FROM Facturas ORDER BY Fecha_hora_emision DESC;`)
-    if (lastReceipt.recordset.length == 0){
-        lastReceipt.recordset[0].Numero_Correlativo = 0
+
+    let numCurrentReceipt: number = 0
+    if (lastReceipt.recordset.length != 0){
+      numCurrentReceipt = lastReceipt.recordset[0].Numero_Correlativo + 1
     }
-    const numCurrentReceipt: number = lastReceipt.recordset[0].Numero_Correlativo + 1
     const ISV15: number = subTotalPurchase * 0.15
     const ISV18: number = 0.00
     const totalNewReceipt: number = subTotalPurchase + ISV15
@@ -124,9 +125,9 @@ ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
     const resultCustomer = await sql.query(`SELECT * FROM Personas 
       JOIN Clientes ON Personas.ID = Clientes.ID_Persona 
       JOIN Membresias ON Clientes.ID_Membresia = Membresias.ID 
-      WHERE DNI = ${dni};`)
+      WHERE DNI = '${dni}';`)
     const currentCustomer = resultCustomer.recordset[0]
-
+    console.log(currentCustomer.Nombre1)
     //ingresa nuevo registro a Detalle_Factura
     const newDetailReceiptResult = await sql.query(`INSERT INTO Detalle_Factura 
       (Numero_Factura,Subtotal, ISV15,ISV18,Total_Factura,ID_Membresia,Total_Impuesto) 
@@ -139,16 +140,16 @@ ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
     //de los numeros de factura que se pueden emitir
     const requestSAR = await sql.query(`SELECT * FROM SAR;`)
     const SARInfo = requestSAR.recordset[0]
-
+    console.log(SARInfo)
     //consulta a la tabla Empleados para conocer el ID del empleado
     const requestEmpleados = await sql.query(`SELECT * FROM Empleados WHERE Habilitado = ${1}`)
     //toma un empleado al azar, solo es de prueba
     const EmpleadosInfo = requestEmpleados.recordset[ Math.floor(Math.random() * requestEmpleados.recordset.length) ]
-
+    console.log(EmpleadosInfo)
     //consulta a la tabla cajas
-    const requestCajas = await sql.query(`SELECT * FROM Empleados WHERE Habilitado = ${1}`)
+    const requestCajas = await sql.query(`SELECT * FROM Cajas WHERE Habilitado = ${1}`)
     //toma un empleado al azar, solo es de prueba
-    const CajasInfo = requestEmpleados.recordset[ Math.floor(Math.random() * requestEmpleados.recordset.length) ]
+    const CajasInfo = requestCajas.recordset[ Math.floor(Math.random() * requestCajas.recordset.length) ]
     //si el numero de factura actual se encuentra dentro del rango de emision aceptado
     if (numCurrentReceipt >= SARInfo.Rango_Inicial && numCurrentReceipt <= SARInfo.Rango_Final){
       const currentDate = new Date()
@@ -158,9 +159,8 @@ ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
       //ingresa un nuevo registro a Factura
       const newReceipt = await sql.query(`INSERT INTO Facturas 
       (Numero_Correlativo,ID_SAR,ID_Empleado,ID_Caja,ID_Cliente,ID_Detalle_Factura,Fecha_hora_emision) 
-      VALUES (${numCurrentReceipt}, ${SARInfo.ID},${EmpleadosInfo.ID},${CajasInfo},${currentCustomer.ID},${newDetailReceipt.ID},${formattedDate + ' ' + formattedTime})`)
+      VALUES (${numCurrentReceipt}, ${SARInfo.ID},${EmpleadosInfo.ID},${CajasInfo.ID},${currentCustomer.ID},${newDetailReceipt.ID},'${formattedDate + ' ' + formattedTime}')`)
       
-      //descontar de inventario los productos que fueron comprados
       res.status(200).json({ message: 'compra realizada con exito' })
     }
     //

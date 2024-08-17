@@ -61,7 +61,7 @@ const routes = [
     meta: { requiresAuth: true, }
   },
   {
-    path: '/invitado',
+    path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/login/cliente',
     name: 'GuestLogin',
     component: GuestLoginView
   },
