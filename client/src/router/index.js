@@ -66,8 +66,6 @@ const routes = [
 
   {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/login/cliente',
-  {
-    path: '/invitado',
     name: 'GuestLogin',
     component: GuestLoginView
 
