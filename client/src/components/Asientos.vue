@@ -43,7 +43,7 @@ function selectSeat(e) {
   if (!props.isTaken && props.isAble && canSelect && !isInSeats(e.target)) {
     const seats = getSeats()
     const max = countSeatsByType(props.seatType, seats)
-    if (max > props.totalByType - 1) {
+    if (max > props.totalByType) {
       const seat = (removeSeat(props.seatType))[1]
       seat.classList.remove('selected')
       seat.classList.add(colorsBySeatType[props.seatType])
