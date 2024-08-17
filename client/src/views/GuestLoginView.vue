@@ -5,7 +5,7 @@
     import  FormHeader  from '../components/FormHeader.vue';
     import { ref } from 'vue';
     import { BACKEND_URL } from '../config/data';
-    import { useRouter } from 'vue-router';
+    import { useRouter, useRoute } from 'vue-router';
 
     const patterns = {
         id: "(\\d{4}-?){2}\\d{5}",
@@ -23,7 +23,9 @@
     const userSecondSurname = ref("");
     const userPhoneNumber = ref("");
     const userEmail = ref("");
-    const router = useRouter()
+
+    const route = useRoute();
+    const router = useRouter();
 
     function validateInputs(inputData){
         let flag = true;
@@ -49,28 +51,26 @@
                             email: userEmail.value 
                         }
         if (validateInputs(inputData)){
-            fetch(BACKEND_URL + '/peliculas/registro',{
+            localStorage.setItem("dni",inputData.id);
+            fetch(BACKEND_URL + '/peliculas/registro', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(inputData)
             })
-            .then((res) => {
-                res.json()
-                .then((response) => {
-                    if (response.status == 200){
-                        console.log("Usuario creado correctamente");
-                        router.push({ name: 'Boleteria' })
-                    }
-                })
-                .catch((err) => {
-                    console.log("Ha ocurrido un error: ", err);
-                });
+            .then(res => res.json())
+            .then(response => {
+                if (response.status === 200) {
+                    console.log("Usuario creado correctamente");
+                } else {
+                    console.log("Error en la creación del usuario");
+                }
             })
-            .catch((err) => {
-                console.log("Error: ",err);
-            })
+            .catch(err => {
+                console.log("Error: ", err);
+            });
+            router.push({ name: 'Boleteria'})
         }
     }
 
@@ -111,8 +111,8 @@
             <Input @currentValue="currentUserMiddleName" id="middleName" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Nombre"></Input>
             <Input @currentValue="currentUserFirstSurname" id="firstSurname" inputType="text" minLength=3 maxLength=10  placeholder="Primer Apellido"></Input>
             <Input @currentValue="currentUserSecondSurname" id="secondSurname" inputType="text" minLength=3 maxLength=10  placeholder="Segundo Apellido"></Input>
-            <Input @currentValue="currentUserPhoneNumber" id="email" inputType="text" minLength=8 maxLength=8  placeholder="Telefono"></Input>
-            <Input @currentValue="currentUserEmail" id="phoneNumber" inputType="email" minLength=10 maxLength=30  placeholder="Correo"></Input>
+            <Input @currentValue="currentUserPhoneNumber" id="phoneNumber" inputType="text" minLength=8 maxLength=8  placeholder="Telefono"></Input>
+            <Input @currentValue="currentUserEmail" id="email" inputType="email" minLength=10 maxLength=30  placeholder="Correo"></Input>
             <Button text="Continuar" @handleClick="register"></Button>
         </Form>
 

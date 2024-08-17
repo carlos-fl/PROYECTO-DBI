@@ -3,6 +3,7 @@ import Form from '../components/Form.vue'
 import Input from '../components/Input.vue'
 import Button from '../components/Button.vue'
 import { useRouter, useRoute } from 'vue-router';
+import { BACKEND_URL } from '../config/data';
 import { ref } from 'vue';
 
 const cardNumber = ref()
@@ -55,9 +56,35 @@ function redirectPreviousView(){
     router.go(-1)
 }
 
-// function showReceipt(){
-//    alert("Pago realizado correctamente")
-// }
+function payment(){
+    if (validateInputData()){
+        fetch(BACKEND_URL + '/boletos/generar/factura',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ dni: localStorage.getItem("dni"), 
+                                    totalValue: parseFloat(localStorage.getItem("total")),
+                                    productInfo: JSON.parse(localStorage.getItem("productInfo"))
+                                })
+        })
+        .then((res) => {
+            res.json()
+            .then((response) => {
+                if (response.status == 200){
+                    console.log(response.message);
+                    alert("Pago exitoso")
+                }
+            })
+            .catch((err) => {
+                console.log("Ha ocurrido un error: ", err);
+            });
+        })
+        .catch((err) => {
+            console.log("Error: ",err);
+        })
+    }
+}
 
 </script>
 
@@ -68,7 +95,7 @@ function redirectPreviousView(){
             <Input @currentValue="currentExpirationDate" :type="'date'" :placeholder="'Fecha de Expiración'" ></Input>
             <Input @currentValue="currentSecurityNumber" :type="'text'" :placeholder="'Código de Seguridad'" :minlength="3" :maxlength="4"></Input>
             <Button :text="'Volver'" @handleClick="redirectPreviousView"></Button>
-            <Button :text="'Pagar'"  @handleClick=""></Button>
+            <Button :text="'Pagar'"  @handleClick="payment"></Button>
         </Form>
     </div>
 </template>
