@@ -7,7 +7,8 @@ import GerenteFormsView from '../views/GerenteFormsView.vue'
 import AsientosView from '../views/AsientosView.vue'
 import Prueba from '../views/Prueba.vue'
 import GuestLoginView from '../views/GuestLoginView.vue'
-
+import SnackSelectionView from '../views/SnackSelectionView.vue'
+import FacturacionView from '../views/facturacionView.vue'
 
 const routes = [
   {
@@ -61,6 +62,12 @@ const routes = [
     path: '/invitado',
     name: 'GuestLogin',
     component: GuestLoginView
+<<<<<<< HEAD
+  }*/
+  {
+    path: '/facturacion',
+    name: 'Facturacion',
+    component: FacturacionView
   }
 ];
 

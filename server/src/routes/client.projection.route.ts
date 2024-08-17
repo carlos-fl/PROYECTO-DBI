@@ -33,7 +33,6 @@ clientProjectionRouter.get('/proyecciones/:sucursal/:name/:id', async (req, res)
             `);
 
              // Log the results to verify the changes
-        console.log('Formatted SQL Query Result:', result.recordset);
 
         if (result.recordset.length > 0) {
             res.json(result.recordset);
