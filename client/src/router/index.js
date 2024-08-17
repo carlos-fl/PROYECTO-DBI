@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '../views/LoginView.vue';
 import BoleteriaView from '../views/BoleteriaView.vue';
-import HomeView from '../views/HomeView.vue';
-import GerenteHomeView from '../views/GerenteHomeView.vue';
-import GerenteFormsView from '../views/GerenteFormsView.vue';
-import AsientosView from '../views/AsientosView.vue';
-import Prueba from '../views/Prueba.vue';
-//import GuestLoginView from '../views/GuestLoginView.vue';
+import HomeView from '../views/HomeView.vue'
+import GerenteHomeView from '../views/GerenteHomeView.vue'
+import GerenteFormsView from '../views/GerenteFormsView.vue'
+import AsientosView from '../views/AsientosView.vue'
+import Prueba from '../views/Prueba.vue'
+import GuestLoginView from '../views/GuestLoginView.vue'
+
 
 const routes = [
   {
@@ -41,9 +42,9 @@ const routes = [
     component: BoleteriaView
   },
   {
-    path: "/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria",
+    path: '/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria',
     name: 'Dulceria',
-    component: Prueba
+    component: SnackSelectionView
   },
   {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',
@@ -60,7 +61,7 @@ const routes = [
     path: '/invitado',
     name: 'GuestLogin',
     component: GuestLoginView
-  }*/
+  }
 ];
 
 const router = createRouter({

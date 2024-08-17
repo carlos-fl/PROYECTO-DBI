@@ -50,7 +50,7 @@ function getSucursalesSelected(branches) {
 }
 
 function getCastSelected(reparto) {
-  cast.value = []
+  castSelected.value = []
   reparto.forEach(el => {
     castSelected.value.push(el.ID) 
   })

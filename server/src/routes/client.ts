@@ -10,7 +10,7 @@ clientRouter.get("/emision/:branchID", async (req: Request, res: Response) => {
       await sql.query(`select Peliculas.ID, Peliculas.Titulo, Peliculas.Duracion_en_minutos, Peliculas.Poster, Clasificacion.TIPO from peliculas
                         join Clasificacion on Peliculas.ID_Clasificacion = Clasificacion.ID
                         join Estados on Peliculas.ID_Estado = Estados.ID
-                        join Peliculas_Sucursales on Peliculas.ID = Peliculas_Sucursales.ID_Pelicua
+                        join Peliculas_Sucursales on Peliculas.ID = Peliculas_Sucursales.ID_Pelicula
                         where Estados.estado like 'En emision' and Peliculas_Sucursales.ID_Sucursal = ${branchID};
 `);
 
@@ -37,3 +37,18 @@ clientRouter.get('/sucursales', async (req: Request, res: Response) => {
   }
 })
 
+clientRouter.post('/registro', async (req: Request, res: Response) => {
+  try {
+    const { id, firstName, middleName, firstSurname,secondSurname, phoneNumber, email } = req.body  
+    const matchingRows = await sql.query(`SELECT * FROM Personas WHERE DNI='${id}'`)
+    if (matchingRows.recordset.length == 0){
+      const result = await sql.query(`INSERT INTO Personas (DNI, Nombre1,Nombre2, Apellido1,Apellido2, Telefono, Correo)
+                    VALUES ('${id}','${firstName}','${middleName}','${firstSurname}','${secondSurname}','${phoneNumber}','${email}');`)
+      return res.status(200).json({ message: 'successful' })
+    }
+    return res.status(200).json({ message: 'La persona ya se encuentra registrada' })
+  } catch(err) {
+    console.log(err);
+    res.status(500).json({ message: 'error while creating new user' })
+  }
+});
