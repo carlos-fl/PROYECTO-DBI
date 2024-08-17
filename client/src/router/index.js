@@ -26,7 +26,8 @@ const routes = [
   {
     path: '/gerente/form/:feature',
     name: 'GerenteFeatures',
-    component: GerenteFormsView
+    component: GerenteFormsView,
+    meta: { requiresAuth: true, }
   },
   {
     path: '/:sucursal/proyecciones/:name/:id',
@@ -37,6 +38,11 @@ const routes = [
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion',
     name: 'Boleteria',
     component: BoleteriaView
+  },
+  {
+    path: "/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria",
+    name: 'Dulceria',
+    component: Prueba
   },
   {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/asientos',

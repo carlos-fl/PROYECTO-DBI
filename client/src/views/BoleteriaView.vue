@@ -4,6 +4,8 @@ import { useRoute, useRouter } from "vue-router";
 import Boleteria from "../components/Boleteria.vue";
 import BoleteriaHeader from "../components/BoleteriaHeader.vue";
 import Button from "../components/Button.vue";
+import Header from "../components/Header.vue";
+import { saveTickets, saveTotalTikects } from "../store/store"
 import { BACKEND_URL } from "../config/data";
 
 const router = useRoute();
@@ -41,7 +43,7 @@ function calculatePrice(price, pricePerChair) {
 
 function updateTotalTickets(e, tipo, precio, tipoAsiento) {
   const value = parseInt(e.value);
-  tickets.value[tipo + tipoAsiento] = [value, precio];
+  tickets.value[tipo + '-' + tipoAsiento] = [value, precio];
 
   totalTicketsSelected.value = 0;
   Object.keys(tickets.value).forEach((key) => {
@@ -66,11 +68,21 @@ function rediretToGetChairs() {
     alert("Tienes que elegir una cantidad de boletos entre 1 y 10");
     return;
   }
+
+  // save tickets selected
+  const ticketsToSave = []
+  Object.keys(tickets.value).forEach(key => {
+    ticketsToSave.push([key, tickets.value[key][0]])
+  })
+
   const sucursal = router.params.sucursal;
   const name = router.params.name;
   const id = router.params.id;
   const idProyeccion = router.params.idProyeccion;
 
+  // save total of tickets selected
+  saveTotalTikects(totalTicketsSelected.value)
+  saveTickets(ticketsToSave)
   const CHAIR_URL = `/${sucursal}/proyecciones/${name}/${id}/${idProyeccion}/asientos`;
   route.push({ path: CHAIR_URL });
 }
@@ -78,6 +90,9 @@ function rediretToGetChairs() {
 
 <template>
   <div id="main-tickets-container">
+    <header>
+      <Header title="CineFilia"></Header>
+    </header>
     <template v-for="(value, key) in pricesPerChair" :key="key">
       <BoleteriaHeader :title="value[0].Nombre"></BoleteriaHeader>
       <div v-for="(el, idx) in value" :key="idx">
@@ -111,6 +126,17 @@ function rediretToGetChairs() {
 </template>
 
 <style scoped>
+
+header {
+  background-color: #1D1D1F;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: #E1F387;
+}
+
+
 #main-tickets-container {
   width: 100%;
 }
@@ -132,6 +158,7 @@ i {
 }
 
 span {
-  font-size: 20px
+  font-size: 20px;
+  color: #E1F387;
 }
 </style>

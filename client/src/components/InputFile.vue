@@ -14,7 +14,7 @@ const props = defineProps({
 const emits = defineEmits(['currentValue'])
 
 function getCurrentValue(e) {
-  emits("currentValue", e.target.value)
+  emits("currentValue", e)
 }
 
 </script>
@@ -59,3 +59,4 @@ input::placeholder {
   opacity: 0.7; /* Slightly transparent placeholder text */
 }
 </style>
+

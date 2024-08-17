@@ -11,7 +11,7 @@ clientRouter.get("/emision/:branchID", async (req: Request, res: Response) => {
                         join Clasificacion on Peliculas.ID_Clasificacion = Clasificacion.ID
                         join Estados on Peliculas.ID_Estado = Estados.ID
                         join Peliculas_Sucursales on Peliculas.ID = Peliculas_Sucursales.ID_Pelicua
-                        where Estados.ID = 2 and Peliculas_Sucursales.ID_Sucursal = ${branchID};
+                        where Estados.estado like 'En emision' and Peliculas_Sucursales.ID_Sucursal = ${branchID};
 `);
 
     return res.status(200).json({

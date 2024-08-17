@@ -20,7 +20,6 @@ function getData() {
 
 function fetchData() {
   const data = getData();
-  console.log("data: ", data);
   fetch(BACKEND_URL + "/gerente/login", {
     method: "POST",
     headers: {
@@ -37,6 +36,7 @@ function fetchData() {
             const urlPath = "/gerente" 
             router.push({ path: urlPath })
           }
+          if (res.status == 401) alert(response.message)
         })
         .catch((err) => {
           console.log("an error has happend: ", err);
@@ -57,14 +57,14 @@ function currentUserPassword(currentValue) {
 </script>
 
 <template>
-  <div>
+  <div id="form-login-container">
     <Form>
       <FormHeader text="Inicio de sesión"></FormHeader>
       <Input
         @currentValue="currentUserData"
         inputType="text"
         :inputValue="userValue"
-        :maxLength="10"
+        :maxLength="30"
         :minLength="3"
         placeholder="usuario"
       ></Input>
@@ -80,3 +80,11 @@ function currentUserPassword(currentValue) {
     </Form>
   </div>
 </template>
+
+
+<style scoped>
+#form-login-container {
+  display: flex;
+  justify-content: center;
+}
+</style>
