@@ -49,6 +49,7 @@
                             email: userEmail.value 
                         }
         if (validateInputs(inputData)){
+            localStorage.setItem("id",inputData[id]);
             fetch(BACKEND_URL + '/peliculas/registro',{
                 method: 'POST',
                 headers: {

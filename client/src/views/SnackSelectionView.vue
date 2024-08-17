@@ -35,20 +35,21 @@ function  updateTotal() {
     total.value = sum 
 };
 
-function storeInfo (){
-    localStorage.setItem("total",total.value)
+function retrieveInfo (){
+    let productsInfo = []
+    // localStorage.setItem("total",total.value)
     Array.from(document.querySelectorAll("select")).forEach((item, index) => {
-        selectValues.push(parseInt(item.value));
+        let product = { id: combos.value[index].ID , quantity: parseInt(item.value), price: combos.value[index].Precio }
+        productsInfo.push(product);
     })
-    localStorage.setItem("productIDs", combos.value.map((item) => {item.ID}) )
-
+    return productsInfo;
 }
 
 function redirect (){
-    // storeInfo()
-    const NEXT_URL = `/facturacion`;
-    router.push({ path: NEXT_URL })
-
+    let productsInfo = retrieveInfo()
+    // const NEXT_URL = `/facturacion`;
+    // router.push({ path: NEXT_URL })
+    router.push({ name: 'Facturacion', params: { data: productsInfo, dni: localStorage.getItem("id"), totalPurchase: total.value } })
 }
 
 
@@ -76,6 +77,7 @@ onMounted(async () => {
     #mainContainer{
         display: grid;
         height: 108vh;
+        width: 100%;
         grid-template-columns: 1fr;
         grid-auto-flow: row;
         gap: 0.8rem;

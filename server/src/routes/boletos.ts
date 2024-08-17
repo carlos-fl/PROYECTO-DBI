@@ -109,10 +109,11 @@ ticketsRouter.get('/combos',async (req: Request, res: Response) => {
 ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
   try {
     const { dni } = req.params
-    const subTotalPurchase: number = Number(req.params)
+    const subTotalPurchase: number = Number(req.params.totalPurchase)
+    console.log(subTotalPurchase)
     const lastReceipt = await sql.query(`SELECT TOP 1 * FROM Facturas ORDER BY Fecha_hora_emision DESC;`)
     if (lastReceipt.recordset.length == 0){
-
+        lastReceipt.recordset[0].Numero_Correlativo = 0
     }
     const numCurrentReceipt: number = lastReceipt.recordset[0].Numero_Correlativo + 1
     const ISV15: number = subTotalPurchase * 0.15
@@ -144,6 +145,10 @@ ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
     //toma un empleado al azar, solo es de prueba
     const EmpleadosInfo = requestEmpleados.recordset[ Math.floor(Math.random() * requestEmpleados.recordset.length) ]
 
+    //consulta a la tabla cajas
+    const requestCajas = await sql.query(`SELECT * FROM Empleados WHERE Habilitado = ${1}`)
+    //toma un empleado al azar, solo es de prueba
+    const CajasInfo = requestEmpleados.recordset[ Math.floor(Math.random() * requestEmpleados.recordset.length) ]
     //si el numero de factura actual se encuentra dentro del rango de emision aceptado
     if (numCurrentReceipt >= SARInfo.Rango_Inicial && numCurrentReceipt <= SARInfo.Rango_Final){
       const currentDate = new Date()
@@ -151,11 +156,12 @@ ticketsRouter.post('/generar/factura',async (req: Request, res: Response) => {
       const formattedTime: String = `${currentDate.getHours().toString().padStart(2, '0')}:${currentDate.getMinutes().toString().padStart(2, '0')}:${currentDate.getSeconds().toString().padStart(2, '0')}`;
       
       //ingresa un nuevo registro a Factura
-      //const newReceipt = await sql.query(`INSERT INTO Facturas 
-      //  (Numero_Correlativo,ID_SAR,ID_Empleado,ID_Caja,ID_Cliente,ID_Detalle_Factura,Fecha_hora_emision) 
-      //  VALUES (${numCurrentReceipt}, ${SARInfo.ID},${EmpleadosInfo.ID},${},${currentCustomer.ID},${newDetailReceipt.ID},${formattedDate + ' ' + formattedTime})`)
+      const newReceipt = await sql.query(`INSERT INTO Facturas 
+      (Numero_Correlativo,ID_SAR,ID_Empleado,ID_Caja,ID_Cliente,ID_Detalle_Factura,Fecha_hora_emision) 
+      VALUES (${numCurrentReceipt}, ${SARInfo.ID},${EmpleadosInfo.ID},${CajasInfo},${currentCustomer.ID},${newDetailReceipt.ID},${formattedDate + ' ' + formattedTime})`)
       
       //descontar de inventario los productos que fueron comprados
+      res.status(200).json({ message: 'compra realizada con exito' })
     }
     //
     return res.status(501).json({ message: 'Numero de factura fuera del rango de emision disponible' })

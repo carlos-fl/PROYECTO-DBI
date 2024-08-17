@@ -66,7 +66,7 @@ const routes = [
     component: GuestLoginView
   },
   {
-    path: '/facturacion',
+    path: '/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria/facturacion',
     name: 'Facturacion',
     component: FacturacionView
   }
