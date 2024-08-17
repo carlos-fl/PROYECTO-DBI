@@ -10,11 +10,12 @@
       </div>
     </div>
 
-     <div class="projection-list">
-      <h2>Proyecciones en la sucursal {{ route.params.sucursal }}</h2>
+    <div class="projection-list">
+      <h2>Proyecciones en {{ route.params.sucursal }}</h2>
       <div v-for="dateGroup in groupedProjections" :key="dateGroup.date" class="projection-group">
         <h3>{{ formatDate(dateGroup.date) }}</h3>
         <div v-for="projection in dateGroup.projections" :key="projection.id" class="projection-detail">
+          <input type="radio" :value="projection.ID" v-model="selectedProjection" />
           <span class="projection-format">{{ projectionFormat(projection) }}</span>
           <span class="projection-time">{{ formatTime(projection.Horario) }}</span>
           <span class="projection-room">Sala: {{ projection.ID_Sala }}</span>
@@ -23,20 +24,23 @@
         </div>
       </div>
     </div>
+    <button @click="continueToGuestLogin" :disabled="!selectedProjection">Continuar</button>
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const projections = ref([]);
 const rawPosterPath = ref(''); 
 const director = ref('');
 const cast = ref([]);
 const synopsis = ref('');
 const groupedProjections = ref([]);
+const selectedProjection = ref(null); 
 
 const posterPath = computed(() => {
   if (!rawPosterPath.value) return '';
@@ -59,8 +63,7 @@ const fetchProjections = async () => {
       projections.value = data;
       groupProjectionsByDate();
 
-      // Fetch and set movie details
-      const movieDetails = data[0]; // assuming all projections belong to the same movie
+      const movieDetails = data[0]; 
       rawPosterPath.value = movieDetails.Poster || '';
       director.value = movieDetails.Director || '';
       cast.value = movieDetails.Cast ? movieDetails.Cast.split(',') : [];
@@ -103,6 +106,15 @@ const projectionFormat = (projection) => {
   return formats.join(' ');
 };
 
+const continueToGuestLogin = () => {
+  if (selectedProjection.value) {
+    router.push({
+      name: 'GuestLogin',
+      params: { idProyeccion: selectedProjection.value }
+    });
+  }
+};
+
 onMounted(fetchProjections);
 </script>
 
@@ -141,7 +153,7 @@ onMounted(fetchProjections);
 
 .projection-detail {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
 }
 
@@ -153,5 +165,25 @@ onMounted(fetchProjections);
 .projection-dub, .projection-sub {
   color: #ffcc00;
   font-weight: bold;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:disabled {
+  background-color: #777;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background-color: #666;
 }
 </style>

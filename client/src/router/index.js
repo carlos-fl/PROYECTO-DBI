@@ -38,6 +38,11 @@ const routes = [
     component: () => import('../views/ProyeccionesView.vue') // Toy probando
   },
   {
+    path: '/guest-login/:idProyeccion',
+    name: 'GuestLogin',
+    component: GuestLoginView
+  },
+  {
     path: '/:sucursal/proyecciones/:name/:id/:idProyeccion',
     name: 'Boleteria',
     component: BoleteriaView
