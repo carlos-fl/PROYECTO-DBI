@@ -63,14 +63,17 @@ const routes = [
     component: GerenteHomeView,
     meta: { requiresAuth: true }
   },
-/*  {
+
+  {
+    path: '/:sucursal/proyecciones/:name/:id/:idProyeccion/login/cliente',
+  {
     path: '/invitado',
     name: 'GuestLogin',
     component: GuestLoginView
-<<<<<<< HEAD
-  }*/
+
+  },
   {
-    path: '/facturacion',
+    path: '/:sucursal/proyecciones/:pelicula/:id/:idProyeccion/dulceria/facturacion',
     name: 'Facturacion',
     component: FacturacionView
   }

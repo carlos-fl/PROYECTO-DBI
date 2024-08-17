@@ -35,20 +35,20 @@ function  updateTotal() {
     total.value = sum 
 };
 
-function storeInfo (){
+function retrieveInfo (){
+    let productsInfo = []
     localStorage.setItem("total",total.value)
     Array.from(document.querySelectorAll("select")).forEach((item, index) => {
-        selectValues.push(parseInt(item.value));
+        let product = { id: combos.value[index].ID , quantity: parseInt(item.value), price: combos.value[index].Precio }
+        productsInfo.push(product);
     })
-    localStorage.setItem("productIDs", combos.value.map((item) => {item.ID}) )
-
+    localStorage.setItem("productInfo", JSON.stringify(productsInfo))
+    return productsInfo;
 }
 
 function redirect (){
-    // storeInfo()
-    const NEXT_URL = `/facturacion`;
-    router.push({ path: NEXT_URL })
-
+    let productsInfo = retrieveInfo()
+    router.push({ name: 'Facturacion'})
 }
 
 

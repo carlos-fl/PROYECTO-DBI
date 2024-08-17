@@ -44,6 +44,11 @@ clientRouter.post('/registro', async (req: Request, res: Response) => {
     if (matchingRows.recordset.length == 0){
       const result = await sql.query(`INSERT INTO Personas (DNI, Nombre1,Nombre2, Apellido1,Apellido2, Telefono, Correo)
                     VALUES ('${id}','${firstName}','${middleName}','${firstSurname}','${secondSurname}','${phoneNumber}','${email}');`)
+      const lastPersonRequest = await sql.query(`SELECT ID FROM Personas WHERE DNI='${id}'`)
+      const lastPerson = lastPersonRequest.recordset[0]
+      console.log(lastPerson)
+      const registerCustomer = await sql.query(`INSERT INTO Clientes (ID_Persona,Estado,ID_Membresia)
+        VALUES (${lastPerson.ID},${1},${1});`)
       return res.status(200).json({ message: 'successful' })
     }
     return res.status(200).json({ message: 'La persona ya se encuentra registrada' })
