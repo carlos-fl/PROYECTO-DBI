@@ -64,13 +64,13 @@ function redirectoToForms(e, feature) {
       <CardsGerente
         @handle-action="(e) => redirectoToForms(e, 'productos')"
         title="Productos"
-        description="Llenado información de nuevo productos"
+        description="Llenado información de nuevos productos"
         :color-index="6"
       ></CardsGerente>
       <CardsGerente
         @handle-action="(e) => redirectoToForms(e, 'combos')"
         title="Combos"
-        description="Llenado información de nueva combos"
+        description="Llenado información de nuevos combos"
         :color-index="7"
       ></CardsGerente>
       <CardsGerente

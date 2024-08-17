@@ -5,6 +5,11 @@ export interface CustomRequest extends Request {
   token: string | JwtPayload;
 }
 export function verifyToken(req: Request, res: Response, next: NextFunction) {
+  
+  if (req.originalUrl === '/api/proyecciones-data') {
+    return next();
+  }
+
   const token: string = req.cookies.access_token
   if (!token) return res.status(401).json({ message: 'unathorized' })
   try {
